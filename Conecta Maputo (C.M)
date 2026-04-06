@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maputo Services - Confiança Local</title>
+    <style>
+        :root {
+            --primary: #25D366;
+            --secondary: #128C7E;
+            --accent: #FFD700;
+            --bg: #f0f2f5;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 15px;
+            color: #1c1e21;
+        }
+
+        .header {
+            text-align: center;
+            background: var(--white);
+            padding: 20px;
+            border-radius: 0 0 20px 20px;
+            margin: -15px -15px 20px -15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .wallet-card {
+            background: linear-gradient(135deg, var(--secondary), #075E54);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 16px;
+            margin-bottom: 15px;
+            position: relative;
+            border: 1px solid #e0e0e0;
+        }
+
+        .badge-verified {
+            background: #e7f3ff;
+            color: #1877f2;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 10px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        .card-title { font-weight: 700; font-size: 18px; margin: 5px 0; }
+        .card-meta { color: #65676b; font-size: 14px; margin-bottom: 10px; }
+        .rating { color: #f39c12; font-size: 14px; margin-bottom: 15px; }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn-main { background: var(--primary); color: white; }
+        .btn-buy { background: var(--accent); color: #000; border-radius: 8px; padding: 8px 15px; font-size: 12px; }
+
+        #container { margin-bottom: 50px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🇲🇿 Maputo Services</h1>
+    <p>Encontre técnicos de confiança perto de si</p>
+</div>
+
+<div class="wallet-card">
+    <div>
+        <span style="font-size: 14px; opacity: 0.9;">Os seus créditos:</span><br>
+        <b style="font-size: 24px;" id="credits-val">--</b>
+    </div>
+    <button class="btn-buy" onclick="buyCredits()">Recarregar (M-Pesa)</button>
+</div>
+
+<input type="text" class="search-bar" id="search" placeholder="O que procura hoje? (ex: Frio)">
+
+<div id="container"></div>
+
+<script>
+// 1. BASE DE DADOS (Simulada para GitHub)
+const services = [
+    {
+        id: 1,
+        name: "Ricardo M.",
+        category: "Encanador (Plombier)",
+        location: "Polana / Sommerschield",
+        rating: "4.9 (15 avaliações)",
+        phone: "258840000000",
+        verified: true
+    },
+    {
+        id: 2,
+        name: "Studio Froid Maputo",
+        category: "AC & Climatização",
+        location: "Matola / Benfica",
+        rating: "4.7 (28 avaliações)",
+        phone: "258840000000",
+        verified: true
+    },
+    {
+        id: 3,
+        name: "Electricista João",
+        category: "Electricidade",
+        location: "Aeroporto / Magoanine",
+        rating: "4.5 (9 avaliações)",
+        phone: "258840000000",
+        verified: false
+    }
+];
+
+// 2. GESTÃO DE UTILIZADOR & MEMÓRIA (LocalStorage)
+let credits = localStorage.getItem("maputo_credits");
+if (credits === null) {
+    credits = 1; // 1 Crédito Grátis para novos utilizadores
+    localStorage.setItem("maputo_credits", credits);
+}
+
+function updateUI() {
+    document.getElementById("credits-val").innerText = credits;
+    localStorage.setItem("maputo_credits", credits);
+}
+
+// 3. FUNÇÃO DE COMPRA (M-Pesa/e-Mola)
+function buyCredits() {
+    const paymentInfo = `
+    💳 RECARGA DE CRÉDITOS
+    -----------------------
+    M-Pesa: 84XXXXXXX
+    e-Mola: 87XXXXXXX
+    
+    Preço: 100 MT = 10 Créditos
+    
+    Após o envio, envie o SMS de confirmação para o nosso WhatsApp.
+    `;
+    alert(paymentInfo);
+    
+    // Simulation de validation (à remplacer par une API plus tard)
+    if(confirm("Já fez o pagamento? (Simulação de validação)")) {
+        credits = parseInt(credits) + 10;
+        updateUI();
+        alert("✅ Créditos adicionados com sucesso!");
+    }
+}
+
+// 4. EXIBIÇÃO DOS CARDS
+function render(data) {
+    const container = document.getElementById("container");
+    container.innerHTML = "";
+    
+    data.forEach(s => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+            ${s.verified ? '<span class="badge-verified">✓ VERIFICADO</span>' : ''}
+            <div class="card-title">${s.name}</div>
+            <div class="card-meta">📁 ${s.category} | 📍 ${s.location}</div>
+            <div class="rating">⭐ ${s.rating}</div>
+            <button class="btn btn-main" onclick="getContact(${s.id})">Ver Contacto (1 Crédito)</button>
+        `;
+        container.appendChild(div);
+    });
+}
+
+// 5. LÓGICA DE CONTACTO
+function getContact(id) {
+    if (credits <= 0) {
+        alert("⚠️ Não tem créditos suficientes. Por favor, recarregue via M-Pesa.");
+        return;
+    }
+
+    const service = services.find(s => s.id === id);
+    
+    if(confirm(`Pretende usar 1 crédito para contactar ${service.name}?`)) {
+        credits--;
+        updateUI();
+        
+        const text = encodeURIComponent(`Olá ${service.name}, vi o seu perfil no Maputo Services e preciso de ajuda.`);
+        window.open(`https://wa.me/${service.phone}?text=${text}`, '_blank');
+    }
+}
+
+// 6. FILTRO DE PESQUISA
+document.getElementById("search").addEventListener("input", (e) => {
+    const term = e.target.value.toLowerCase();
+    const filtered = services.filter(s => 
+        s.category.toLowerCase().includes(term) || 
+        s.location.toLowerCase().includes(term) ||
+        s.name.toLowerCase().includes(term)
+    );
+    render(filtered);
+});
+
+// INITIALIZE
+updateUI();
+render(services);
+</script>
+
+</body>
+</html>
