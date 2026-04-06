@@ -4,160 +4,156 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maputo Services Elite</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --gold: #fdcb6e; --emerald: #00b894; --dark: #0f172a; --card: #1e293b; --text: #f8fafc; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--dark); color: var(--text); margin: 0; overflow-x: hidden; }
-
-        /* --- SPLASH SCREEN & PUBLICITÉ --- */
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--dark); color: var(--text); margin: 0; padding-bottom: 100px; overflow-x: hidden; }
+        
+        /* SPLASH SCREEN (PUB D'OUVERTURE) */
         #splash { position: fixed; inset: 0; background: var(--dark); z-index: 5000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; transition: 0.8s ease-in-out; }
-        .m-logo { width: 100px; height: 100px; background: linear-gradient(145deg, #233142, #0f172a); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 60px; font-weight: 800; color: var(--emerald); box-shadow: 10px 10px 20px #0a0f1a, -10px -10px 20px #1e293b; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        .splash-adv { font-size: 14px; color: var(--gold); letter-spacing: 2px; margin-top: 10px; }
-        .btn-start { margin-top: 40px; background: var(--emerald); color: white; border: none; padding: 15px 40px; border-radius: 50px; font-weight: 800; cursor: pointer; animation: pulse 2s infinite; }
-
-        /* --- EXPLICATION (ONBOARDING) --- */
-        #onboarding { display: none; padding: 40px 20px; text-align: center; }
-        .step { background: var(--card); padding: 20px; border-radius: 20px; margin-bottom: 15px; border-left: 4px solid var(--emerald); }
-
-        /* --- MAIN APP --- */
-        #main-app { display: none; padding: 20px; }
-        .header-app { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .balance-pill { background: var(--card); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--emerald); display: flex; align-items: center; gap: 10px; }
+        .m-logo { width: 90px; height: 90px; background: linear-gradient(145deg, #1e293b, #0f172a); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 50px; font-weight: 800; color: var(--emerald); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
         
-        .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 10px; }
-        .cat-item { background: var(--card); padding: 15px 10px; border-radius: 15px; text-align: center; min-width: 85px; cursor: pointer; transition: 0.3s; border: 1px solid transparent; }
-        .cat-item.active { border-color: var(--emerald); background: rgba(0,184,148,0.1); }
-        .cat-item i { font-size: 20px; color: var(--emerald); display: block; margin-bottom: 8px; }
-        .cat-item span { font-size: 10px; font-weight: 700; text-transform: uppercase; }
-
-        .card { background: var(--card); border-radius: 24px; padding: 20px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
-        .card-top { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .name { font-size: 18px; font-weight: 800; color: var(--white); }
-        .loc { font-size: 13px; color: #94a3b8; margin-bottom: 15px; }
-        .price-tag { font-size: 11px; background: rgba(253, 203, 110, 0.2); color: var(--gold); padding: 4px 10px; border-radius: 5px; }
+        .container { padding: 0 20px; max-width: 600px; margin: 0 auto; display: none; }
         
-        .btn-call { width: 100%; background: var(--emerald); color: white; border: none; padding: 14px; border-radius: 14px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-unlocked { background: #3b82f6; }
-
-        .buy-area { background: linear-gradient(to right, #1e293b, #0f172a); padding: 20px; border-radius: 20px; margin-top: 20px; border: 1px dashed var(--gold); }
+        /* UI ELEMENTS */
+        .balance-card { background: linear-gradient(135deg, var(--card), #0f172a); padding: 20px; border-radius: 25px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(0,184,148,0.3); margin: 20px 0; }
+        .search-input { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #334155; background: var(--card); color: white; margin-bottom: 20px; box-sizing: border-box; }
+        .cat-nav { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 15px; scrollbar-width: none; }
+        .cat-btn { background: var(--card); border: 1px solid #334155; color: white; padding: 10px 18px; border-radius: 50px; white-space: nowrap; cursor: pointer; font-size: 13px; font-weight: 600; }
+        .cat-btn.active { background: var(--emerald); border-color: var(--emerald); }
         
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 184, 148, 0.4); } 70% { box-shadow: 0 0 0 20px rgba(0, 184, 148, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 184, 148, 0); } }
+        /* CARDS */
+        .card { background: var(--card); border-radius: 22px; padding: 18px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .btn-main { width: 100%; padding: 14px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; margin-top: 15px; transition: 0.2s; }
+        .btn-unlock { background: var(--emerald); color: white; }
+        .btn-chat { background: #3b82f6; color: white; }
+
+        /* VOUCHER SYSTEM (LE RETOUR) */
+        .pay-panel { background: rgba(253, 203, 110, 0.05); padding: 20px; border-radius: 20px; border: 1px dashed var(--gold); margin-top: 30px; text-align: center; }
+        .v-input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; margin: 10px 0; text-align: center; font-weight: bold; }
+
+        /* FAB (REGISTRE) */
+        .fab { position: fixed; bottom: 25px; right: 20px; background: var(--emerald); color: white; border: none; padding: 15px 20px; border-radius: 30px; font-weight: 800; box-shadow: 0 10px 30px rgba(0,184,148,0.4); z-index: 100; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div id="splash">
         <div class="m-logo">M</div>
-        <h1 style="margin:0">MAPUTO SERVICES</h1>
-        <div class="splash-adv">CONFIANÇA • QUALIDADE • RAPIDEZ</div>
-        <p style="opacity: 0.6; font-size: 14px; max-width: 250px;">Frio, Eléctrica, Mecânica, Limpeza e muito mais num só clique.</p>
-        <button class="btn-start" onclick="showOnboarding()">ENTRAR AGORA</button>
+        <h1 style="margin:0; font-size: 28px;">MAPUTO SERVICES</h1>
+        <p style="opacity: 0.6; font-size: 14px; margin-bottom: 30px;">Frio • Eléctrica • Mecânica • Limpeza</p>
+        <button onclick="startApp()" style="background:var(--emerald); color:white; border:none; padding:15px 40px; border-radius:50px; font-weight:800; cursor:pointer;">ENTRAR</button>
     </div>
 
-    <div id="onboarding">
-        <div class="m-logo" style="width:60px; height:60px; font-size:30px; margin: 0 auto 20px;">M</div>
-        <h2>Como Funciona?</h2>
-        <div class="step">🔍 <b>Pesquise:</b> Escolha uma categoria ou use a barra de busca.</div>
-        <div class="step">💎 <b>Créditos:</b> Cada contacto custa 2 Créditos (50 MT).</div>
-        <div class="step">📲 <b>WhatsApp:</b> Fale direto com o técnico em segundos.</div>
-        <button class="btn-start" onclick="showApp()">ENTENDI, VAMOS LÁ!</button>
-    </div>
-
-    <div id="main-app">
-        <div class="header-app">
-            <div style="font-weight: 800; font-size: 20px;">Olá, <span style="color:var(--emerald)">Maputo</span></div>
-            <div class="balance-pill"><i class="fas fa-gem" style="color:var(--gold)"></i> <b id="c-val">--</b></div>
+    <div class="container" id="app">
+        <div class="m-logo" style="width:60px; height:60px; font-size:30px; margin: 20px auto;">M</div>
+        
+        <div class="balance-card">
+            <div><small style="opacity:0.6; font-weight:700">MEU SALDO</small><br><b style="font-size:26px" id="c-val">--</b> <small>Créditos</small></div>
+            <button onclick="buyReq()" style="background:var(--gold); border:none; padding:10px 15px; border-radius:12px; font-weight:800; cursor:pointer">RECARREGAR</button>
         </div>
 
-        <div class="cat-grid">
-            <div class="cat-item active" onclick="fCat('Todos', this)"><i class="fas fa-th-large"></i><span>Todos</span></div>
-            <div class="cat-item" onclick="fCat('Frio', this)"><i class="fas fa-snowflake"></i><span>Frio</span></div>
-            <div class="cat-item" onclick="fCat('Eléctrica', this)"><i class="fas fa-bolt"></i><span>Eléctrica</span></div>
-            <div class="cat-item" onclick="fCat('Mecânica', this)"><i class="fas fa-car"></i><span>Auto</span></div>
-            <div class="cat-item" onclick="fCat('Limpeza', this)"><i class="fas fa-broom"></i><span>Limpeza</span></div>
-            <div class="cat-item" onclick="fCat('Serralheiro', this)"><i class="fas fa-key"></i><span>Chaves</span></div>
-            <div class="cat-item" onclick="fCat('Electrónica', this)"><i class="fas fa-tv"></i><span>TV/PC</span></div>
-            <div class="cat-item" onclick="fCat('Canalizador', this)"><i class="fas fa-faucet"></i><span>Água</span></div>
-        </div>
+        <input type="text" id="src" class="search-input" placeholder="Pesquisar por bairro ou serviço...">
 
-        <input type="text" id="src" class="card" style="width:100%; border:none; padding:15px; margin-bottom:20px; color:white;" placeholder="Pesquisar técnico...">
-
+        <div class="cat-nav" id="cat-nav"></div>
         <div id="list"></div>
 
-        <div class="buy-area">
-            <h4 style="margin:0 0 10px 0; color:var(--gold)">💰 RECARREGAR CRÉDITOS</h4>
-            <div style="display:flex; gap:10px;">
-                <input id="v-in" style="flex:1; padding:12px; border-radius:10px; border:none; background:#0f172a; color:white;" placeholder="Código MS-XXXX">
-                <button onclick="valV()" style="background:var(--gold); border:none; padding:10px 20px; border-radius:10px; font-weight:800;">OK</button>
-            </div>
-            <p onclick="window.open('https://wa.me/258856113036?text=Quero_Creditos')" style="font-size:12px; text-align:center; margin-top:15px; text-decoration:underline; cursor:pointer;">Comprar via M-Pesa (100MT = 10Cr)</p>
+        <div class="pay-panel">
+            <h4 style="color:var(--gold); margin:0">VALIDAR CÓDIGO (VOUCHER)</h4>
+            <input type="text" id="v-code" class="v-input" placeholder="CÓDIGO MS-XXXX">
+            <button onclick="valCode()" style="background:var(--gold); border:none; width:100%; padding:12px; border-radius:10px; font-weight:800; cursor:pointer">ATIVAR AGORA</button>
         </div>
     </div>
 
-    <script>
-        const myN = "258856113036";
-        const techs = [
-            // 7 CATEGORIAS x 5 = 35 TÉCNICOS
-            {id:1,n:"REFRECLIMA",c:"Frio",l:"Polana",p:"258842354805"},{id:2,n:"Mestre AC",c:"Frio",l:"Matola",p:"258840001122"},{id:3,n:"Ar Frio MZ",c:"Frio",l:"Benfica",p:"258871234567"},{id:4,n:"Frio Center",c:"Frio",l:"Alto Maé",p:"258823334445"},{id:5,n:"Elite Frio",c:"Frio",l:"Costa do Sol",p:"258861112233"},
-            {id:6,n:"Sengelec",c:"Eléctrica",l:"Central",p:"258842242424"},{id:7,n:"João Electro",c:"Eléctrica",l:"Laulane",p:"258850001111"},{id:8,n:"PowerTech",c:"Eléctrica",l:"Zimpeto",p:"258823235590"},{id:9,n:"Luz Divina",c:"Eléctrica",l:"Hulene",p:"258873213896"},{id:10,n:"Spark MZ",c:"Eléctrica",l:"Matola Rio",p:"258845556667"},
-            {id:11,n:"Mecânica Polana",c:"Mecânica",l:"Bairro Central",p:"258849990001"},{id:12,n:"Auto Garage",c:"Mecânica",l:"T3 Matola",p:"258871112222"},{id:13,n:"Pit Stop MZ",c:"Mecânica",l:"Aeroporto",p:"258820003333"},{id:14,n:"Mestre Travões",c:"Mecânica",l:"Magoanine",p:"258864445555"},{id:15,n:"Turbo Maputo",c:"Mecânica",l:"Sommerschield",p:"258841112222"},
-            {id:16,n:"Clean Force",c:"Limpeza",l:"Matola Cidade",p:"258840001111"},{id:17,n:"Brilho Total",c:"Limpeza",l:"Polana Caniço",p:"258870002222"},{id:18,n:"Maputo Shine",c:"Limpeza",l:"Bairro Central",p:"258820003333"},{id:19,n:"Dona Maria Clean",c:"Limpeza",l:"Alto Maé",p:"258850004444"},{id:20,n:"Super Clean MZ",c:"Limpeza",l:"Costa do Sol",p:"258860005555"},
-            {id:21,n:"Chaveiro Maputo",c:"Serralheiro",l:"Central",p:"258840009991"},{id:22,n:"Mestre Chaves",c:"Serralheiro",l:"Matola",p:"258870009992"},{id:23,n:"SOS Portas",c:"Serralheiro",l:"Benfica",p:"258820009993"},{id:24,n:"Serralharia I&I",c:"Serralheiro",l:"Hulene",p:"258850009994"},{id:25,n:"Elite Keys",c:"Serralheiro",l:"Zimpeto",p:"258860009995"},
-            {id:26,n:"TV Doctor",c:"Electrónica",l:"Alto Maé",p:"258840008881"},{id:27,n:"PC Clinic Maputo",c:"Electrónica",l:"Polana",p:"258870008882"},{id:28,n:"Som Digital",c:"Electrónica",l:"Malhangalene",p:"258820008883"},{id:29,n:"Smart Fix",c:"Electrónica",l:"Laulane",p:"258850008884"},{id:30,n:"Mestre Chips",c:"Electrónica",l:"Matola 700",p:"258860008885"},
-            {id:31,n:"Canalizador Rio",c:"Canalizador",l:"Magoanine",p:"258840007771"},{id:32,n:"Água Pura MZ",c:"Canalizador",l:"Inhagoia",p:"258870007772"},{id:33,n:"SOS Plomberie",c:"Canalizador",l:"Costa do Sol",p:"258820007773"},{id:34,n:"Mestre Cano",c:"Canalizador",l:"Matola T3",p:"258850007774"},{id:35,n:"Furo de Água MZ",c:"Canalizador",l:"Boane",p:"258860007775"}
-        ];
+    <button class="fab" onclick="window.open('https://wa.me/258856113036?text=Quero_registar_meu_negocio')"><i class="fas fa-plus"></i> REGISTAR NEGÓCIO</button>
 
-        let cr = localStorage.getItem("u_c") || 2; // 2 Créditos Grátis
-        let un = JSON.parse(localStorage.getItem("u_l")) || [];
+<script>
+    const ADMIN_WA = "258856113036";
+    
+    // --- LES 35 TECHNICIENS (Base pour tes tests) ---
+    const technicians = [
+        { id:1, n:"Refri-Maputo Lda", c:"Frio", l:"Alto Maé", p:"258842354805" },
+        { id:2, n:"Mestre Momed", c:"Frio", l:"Matola T3", p:"258841234567" },
+        { id:6, n:"Sengelec MZ", c:"Eléctrica", l:"Baixa", p:"258842242424" },
+        { id:11, n:"Isarte Canaliza", c:"Canalizador", l:"Sommerschield", p:"258847778899" },
+        { id:16, n:"Auto-Socorro 24h", c:"Mecânica", l:"EN1 / Matola", p:"258844445555" },
+        { id:21, n:"Clean Force", c:"Limpeza", l:"Polana", p:"258840001111" },
+        { id:26, n:"Reparação TV", c:"Electrónica", l:"Malhangalene", p:"258840008881" },
+        { id:31, n:"Chaveiro 24h", c:"Serralheiro", l:"Bairro Central", p:"258840009991" }
+        // ... (Ajoute le reste ici selon le même modèle)
+    ];
 
-        function showOnboarding() { document.getElementById('splash').style.transform = 'translateY(-100%)'; document.getElementById('onboarding').style.display = 'block'; }
-        function showApp() { document.getElementById('onboarding').style.display = 'none'; document.getElementById('main-app').style.display = 'block'; }
+    const categories = ["Todos", "Frio", "Eléctrica", "Canalizador", "Mecânica", "Limpeza", "Electrónica", "Serralheiro"];
+    let credits = localStorage.getItem("ms_credits") || 2; 
+    let unlocked = JSON.parse(localStorage.getItem("ms_unlocked")) || [];
 
-        const up = () => { document.getElementById("c-val").innerText = cr; localStorage.setItem("u_c", cr); localStorage.setItem("u_l", JSON.stringify(un)); };
-        
-        const ren = (d = techs) => {
-            const l = document.getElementById("list"); l.innerHTML = "";
-            d.forEach(t => {
-                const ok = un.includes(t.id);
-                l.innerHTML += `<div class="card">
-                    <div class="card-top"><span class="card-cat">${t.c}</span><span class="price-tag">CUSTO: 2 CR</span></div>
-                    <div class="name">${t.n}</div>
-                    <div class="loc">📍 ${t.l}</div>
-                    <button class="btn-call ${ok?'btn-unlocked':''}" onclick="hC(${t.id})">
-                        ${ok?'<i class="fab fa-whatsapp"></i> FALAR AGORA':'<i class="fas fa-lock"></i> VER CONTACTO'}
+    function startApp() {
+        document.getElementById('splash').style.transform = 'translateY(-100%)';
+        document.getElementById('app').style.display = 'block';
+    }
+
+    const save = () => {
+        document.getElementById("c-val").innerText = credits;
+        localStorage.setItem("ms_credits", credits);
+        localStorage.setItem("ms_unlocked", JSON.stringify(unlocked));
+    };
+
+    const render = (data = technicians) => {
+        const list = document.getElementById("list");
+        list.innerHTML = "";
+        data.forEach(t => {
+            const isOk = unlocked.includes(t.id);
+            list.innerHTML += `
+                <div class="card">
+                    <span style="color:var(--emerald); font-size:11px; font-weight:800;">${t.c}</span>
+                    <div style="font-size:19px; font-weight:800; margin:5px 0;">${t.n}</div>
+                    <div style="font-size:13px; color:#94a3b8;">📍 ${t.l}</div>
+                    <button class="btn-main ${isOk ? 'btn-chat' : 'btn-unlock'}" onclick="handleTech(${t.id})">
+                        ${isOk ? 'FALAR AGORA' : 'VER CONTACTO (2 Cr)'}
                     </button>
                 </div>`;
-            });
-        };
-
-        const hC = (id) => {
-            const t = techs.find(x => x.id === id);
-            if(un.includes(id)) { window.open(`https://wa.me/${t.p}`); return; }
-            if(cr < 2){ alert("Créditos Insuficientes! Recarregue."); return; }
-            if(confirm("Desbloquear este contacto por 2 Créditos?")){ cr -= 2; un.push(id); up(); ren(); window.open(`https://wa.me/${t.p}`); }
-        };
-
-        const fCat = (c, el) => {
-            document.querySelectorAll('.cat-item').forEach(b => b.classList.remove('active'));
-            el.classList.add('active');
-            ren(c === 'Todos' ? techs : techs.filter(t => t.c === c));
-        };
-
-        const valV = () => {
-            const i = document.getElementById("v-in").value, v = {"MS-100":10, "MS-200":25, "MS-500":75};
-            if(v[i]){ cr = parseInt(cr) + v[i]; up(); alert("🎉 Ativado com Sucesso!"); ren(); document.getElementById("v-in").value=""; } 
-            else alert("Código Inválido.");
-        };
-
-        document.getElementById("src").addEventListener("input", e => {
-            const t = e.target.value.toLowerCase();
-            ren(techs.filter(x => x.n.toLowerCase().includes(t) || x.l.toLowerCase().includes(t)));
         });
+    };
 
-        up(); ren();
-    </script>
+    const handleTech = (id) => {
+        const t = technicians.find(x => x.id === id);
+        if(unlocked.includes(id)) { window.open(`https://wa.me/${t.p}`); return; }
+        if(credits < 2) return alert("Saldo insuficiente.");
+        if(confirm(`Desbloquear ${t.n}?`)) { credits -= 2; unlocked.push(id); save(); render(); window.open(`https://wa.me/${t.p}`); }
+    };
+
+    const buyReq = () => window.open(`https://wa.me/${ADMIN_WA}?text=Quero_recarregar_creditos`);
+    
+    const valCode = () => {
+        const code = document.getElementById("v-code").value.trim().toUpperCase();
+        const codesMap = { "MS-100": 10, "MS-200": 25, "MS-500": 75 };
+        if(codesMap[code]) {
+            credits = parseInt(credits) + codesMap[code];
+            save(); alert("✅ Créditos Ativados!"); document.getElementById("v-code").value = ""; render();
+        } else alert("❌ Código inválido.");
+    };
+
+    document.getElementById("src").addEventListener("input", (e) => {
+        const term = e.target.value.toLowerCase();
+        render(technicians.filter(t => t.n.toLowerCase().includes(term) || t.l.toLowerCase().includes(term) || t.c.toLowerCase().includes(term)));
+    });
+
+    const nav = document.getElementById("cat-nav");
+    categories.forEach(c => {
+        const btn = document.createElement("button");
+        btn.className = "cat-btn" + (c === "Todos" ? " active" : "");
+        btn.innerText = c;
+        btn.onclick = () => {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            render(c === "Todos" ? technicians : technicians.filter(t => t.c === c));
+        };
+        nav.appendChild(btn);
+    });
+
+    save(); render();
+</script>
 </body>
-                                                                            </html>
-                                                                     
+                                                                                                                                                                                   </html>
+                
