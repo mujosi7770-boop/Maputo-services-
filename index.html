@@ -1,234 +1,79 @@
 <!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maputo Services | Confiança Local</title>
-    <style>
-        :root {
-            --primary: #00b894;
-            --dark-teal: #083d38;
-            --accent: #fdcb6e;
-            --bg: #f8f9fa;
-            --white: #ffffff;
-            --text: #2d3436;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg);
-            margin: 0;
-            color: var(--text);
-            line-height: 1.6;
-        }
-
-        .header {
-            background: linear-gradient(135deg, var(--dark-teal), #004d40);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-            border-radius: 0 0 30px 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .header h1 { margin: 0; font-size: 28px; letter-spacing: -1px; }
-        .header p { opacity: 0.8; font-size: 14px; margin-top: 5px; }
-
-        .container { padding: 20px; max-width: 600px; margin: 0 auto; }
-
-        .wallet-card {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 20px;
-            margin-top: -30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-
-        .search-bar {
-            width: 100%;
-            padding: 18px;
-            border: 2px solid transparent;
-            border-radius: 15px;
-            margin: 20px 0;
-            font-size: 16px;
-            background: var(--white);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            box-sizing: border-box;
-            transition: 0.3s;
-        }
-
-        .search-bar:focus { border-color: var(--primary); outline: none; }
-
-        .card {
-            background: var(--white);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-        }
-
-        .badge-verified {
-            background: #d1f7ed;
-            color: #00a884;
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-
-        .card-title { font-weight: 800; font-size: 19px; margin: 10px 0 5px 0; color: var(--dark-teal); }
-        .card-meta { color: #636e72; font-size: 14px; display: flex; align-items: center; gap: 5px; }
-        .rating { color: var(--accent); font-weight: bold; margin: 10px 0; }
-
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 15px;
-        }
-
-        .btn-main { background: var(--primary); color: white; }
-        .btn-main:hover { background: #00a884; }
-
-        /* Modal Design */
-        #register-modal {
-            display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
-            background:rgba(0,0,0,0.7); z-index:1000; backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background: white; margin: 10% auto; padding: 30px; 
-            border-radius: 25px; width: 85%; max-width: 400px;
-        }
-
-        .fab {
-            position:fixed; bottom:25px; right:25px; 
-            background: var(--dark-teal); color:white; border:none;
-            padding: 15px 25px; border-radius: 50px; font-weight: bold;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2); cursor:pointer;
-        }
-    </style>
-</head>
+<html lang="pt"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Maputo Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    :root { --p: #00b894; --d: #083d38; --a: #fdcb6e; --w: #fff; }
+    body { font-family: 'Inter', sans-serif; background: #f4f7f6; margin: 0; padding-bottom: 80px; color: #2d3436; }
+    .header { background: linear-gradient(135deg, var(--d), #004d40); color: #fff; padding: 40px 20px; text-align: center; border-radius: 0 0 30px 30px; }
+    .container { padding: 0 20px; max-width: 600px; margin: 0 auto; }
+    .panel { background: var(--w); margin: -25px auto 20px; padding: 20px; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+    .flex-b { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+    .buy-btn { background: var(--a); border: none; padding: 8px 15px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+    .act-form { display: flex; gap: 5px; background: #f8f9fa; padding: 10px; border-radius: 12px; }
+    .v-input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; text-transform: uppercase; }
+    .v-btn { background: var(--d); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; }
+    .search-bar { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #ddd; margin: 15px 0; box-sizing: border-box; }
+    .filters { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 15px; scrollbar-width: none; }
+    .f-btn { background: var(--w); border: 1px solid #ddd; padding: 8px 15px; border-radius: 20px; white-space: nowrap; cursor: pointer; font-weight: 600; }
+    .f-btn.active { background: var(--d); color: #fff; }
+    .card { background: var(--w); border-radius: 20px; padding: 15px; margin-bottom: 12px; border: 1px solid #eee; position: relative; }
+    .badge { background: #d1f7ed; color: #00a884; padding: 3px 8px; border-radius: 5px; font-size: 10px; font-weight: 800; position: absolute; top: 15px; right: 15px; }
+    .c-head { display: flex; align-items: center; gap: 12px; }
+    .c-icon { width: 40px; height: 40px; border-radius: 10px; background: #e6f7f4; color: var(--p); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .btn { width: 100%; padding: 12px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+    .b-p { background: var(--p); color: #fff; }
+    .b-u { background: #0984e3; color: #fff; }
+    .fab { position: fixed; bottom: 20px; right: 20px; background: var(--d); color: #fff; border: none; padding: 12px 20px; border-radius: 30px; font-weight: 700; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:999; }
+</style></head>
 <body>
-
-<div class="header">
-    <h1>🇲🇿 Maputo Services</h1>
-    <p>A elite dos técnicos e profissionais da capital</p>
-</div>
-
+<div class="header"><h1>MAPUTO<span>SERVICES</span></h1><p>Elite profissional de Moçambique</p></div>
 <div class="container">
-    <div class="wallet-card">
-        <div>
-            <span style="font-size: 12px; color: #636e72;">OS SEUS CRÉDITOS</span><br>
-            <b style="font-size: 28px; color: var(--dark-teal);" id="credits-val">--</b>
-        </div>
-        <button onclick="buyCredits()" style="background:var(--accent); border:none; padding:10px 15px; border-radius:10px; font-weight:bold; cursor:pointer;">
-            Recarregar
-        </button>
+    <div class="panel">
+        <div class="flex-b"><div><small>CRÉDITOS</small><br><b style="font-size:24px" id="c-val">--</b></div><button class="buy-btn" onclick="buy()">100MT = 10Cr</button></div>
+        <div class="act-form"><input id="v-in" class="v-input" placeholder="Código de Ativação"><button class="v-btn" onclick="valV()">Validar</button></div>
     </div>
-
-    <input type="text" class="search-bar" id="search" placeholder="O que precisa hoje? (ex: AC, Frio)">
-
-    <div id="container-list"></div>
+    <input id="src" class="search-bar" placeholder="O que procura?">
+    <div class="filters"><button class="f-btn active" onclick="fCat('Todos')">Todos</button><button class="f-btn" onclick="fCat('Frio')">❄️ Frio</button><button class="f-btn" onclick="fCat('Eléctrica')">⚡ Eléctrica</button><button class="f-btn" onclick="fCat('Plombier')">🚰 Plombier</button></div>
+    <div id="list"></div>
 </div>
-
-<div id="register-modal">
-    <div class="modal-content">
-        <h2 style="margin-top:0">Registar Serviço</h2>
-        <input type="text" id="reg-name" class="search-bar" placeholder="Nome do Negócio" style="background:#f1f2f6">
-        <input type="text" id="reg-cat" class="search-bar" placeholder="Categoria (ex: Plombier)" style="background:#f1f2f6">
-        <input type="text" id="reg-loc" class="search-bar" placeholder="Localização" style="background:#f1f2f6">
-        <input type="number" id="reg-phone" class="search-bar" placeholder="WhatsApp (ex: 25885...)" style="background:#f1f2f6">
-        
-        <button class="btn btn-main" onclick="sendRegistration()">Enviar Proposta</button>
-        <button class="btn" style="background:none; color:#636e72" onclick="closeModal()">Fechar</button>
-    </div>
-</div>
-
-<button class="fab" onclick="openModal()">+ Adicionar Serviço</button>
+<button class="fab" onclick="shM(1)">Registar Negócio</button>
+<div id="m" class="modal"><div style="background:#fff;margin:20% auto;padding:25px;border-radius:20px;width:80%;max-width:350px">
+    <h3>Registar</h3><input id="rn" class="search-bar" placeholder="Nome"><input id="rp" class="search-bar" placeholder="WhatsApp"><button class="btn b-p" onclick="sReg()">Enviar</button><button class="btn" onclick="shM(0)">Fechar</button>
+</div></div>
 
 <script>
-const services = [
-    { id: 1, name: "REFRECLIMA", category: "AC & Climatização (Frio)", location: "Av. Ho Chi Min, Maputo", rating: "⭐ 4.8", phone: "258842354805", verified: true },
-    { id: 2, name: "Sengelec Lda", category: "Electricidade Geral", location: "Maputo Central", rating: "⭐ 4.9", phone: "258842242424", verified: true },
-    { id: 3, name: "Isarte Construções", category: "Canalização (Plombier)", location: "Maputo Cidade", rating: "⭐ 4.8", phone: "258847778899", verified: true },
-    { id: 4, name: "Bringues Clean", category: "Serviços de Limpeza", location: "Av. Albert Lithuli", rating: "⭐ 4.9", phone: "258866625701", verified: true },
-    { id: 5, name: "Canalizador Luís", category: "Canalização & Fugas", location: "Laulane", rating: "⭐ 4.4", phone: "258876665544", verified: false }
+const myNum = "258856113036", icons = {Frio:"fa-snowflake", Eléctrica:"fa-bolt", Plombier:"fa-faucet"};
+const techs = [
+    {id:1,n:"REFRECLIMA",c:"Frio",l:"Polana",r:"4.9",p:"258842354805",v:1},{id:2,n:"Ar Frio MZ",c:"Frio",l:"Alto Maé",r:"4.7",p:"258871234567",v:1},{id:3,n:"Studio Froid",c:"Frio",l:"Matola",r:"4.5",p:"258840001122",v:0},{id:4,n:"Mestre Paulo",c:"Frio",l:"Hulene",r:"4.6",p:"258823334445",v:1},{id:5,n:"Tecno-Frio",c:"Frio",l:"Benfica",r:"4.8",p:"258861112233",v:1},
+    {id:6,n:"Sengelec Lda",c:"Eléctrica",l:"Central",r:"4.9",p:"258842242424",v:1},{id:7,n:"João Electro",c:"Eléctrica",l:"Laulane",r:"4.5",p:"258850001111",v:0},{id:8,n:"Electro-Serv",c:"Eléctrica",l:"Triunfo",r:"4.7",p:"258823235590",v:1},{id:9,n:"Tecno-Luz",c:"Eléctrica",l:"Alto Maé",r:"4.4",p:"258879998887",v:0},{id:10,n:"PowerTech",c:"Eléctrica",l:"Matola",r:"4.8",p:"258873213896",v:1},
+    {id:11,n:"Isarte Lda",c:"Plombier",l:"Maputo",r:"4.8",p:"258847778899",v:1},{id:12,n:"Ricardo M.",c:"Plombier",l:"Central",r:"4.7",p:"258840002233",v:1},{id:13,n:"Jjsitole Lda",c:"Plombier",l:"Sommerschield",r:"4.5",p:"258824445556",v:0},{id:14,n:"Luís Canal.",c:"Plombier",l:"Laulane",r:"4.2",p:"258876665544",v:0},{id:15,n:"Mestre MZ",c:"Plombier",l:"Matola T3",r:"4.6",p:"258869990000",v:1}
 ];
-
-let credits = localStorage.getItem("map_credits") || 1;
-
-function updateUI() {
-    document.getElementById("credits-val").innerText = credits;
-    localStorage.setItem("map_credits", credits);
-}
-
-function render(data) {
-    const list = document.getElementById("container-list");
-    list.innerHTML = "";
-    data.forEach(s => {
-        const div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = `
-            ${s.verified ? '<span class="badge-verified">✓ Verificado</span>' : ''}
-            <div class="card-title">${s.name}</div>
-            <div class="card-meta">📍 ${s.location} • ${s.category}</div>
-            <div class="rating">${s.rating}</div>
-            <button class="btn btn-main" onclick="getContact(${s.id})">Ver Contacto (1 Crédito)</button>
-        `;
-        list.appendChild(div);
+let cr = localStorage.getItem("u_c")||1, un = JSON.parse(localStorage.getItem("u_l"))||[];
+const up = () => { document.getElementById("c-val").innerText = cr; localStorage.setItem("u_c", cr); localStorage.setItem("u_l", JSON.stringify(un)); };
+const ren = (d = techs) => {
+    const l = document.getElementById("list"); l.innerHTML = "";
+    d.forEach(t => {
+        const ok = un.includes(t.id), div = document.createElement("div"); div.className = "card";
+        div.innerHTML = `${t.v?'<span class="badge">✓ VERIFICADO</span>':''}<div class="c-head"><div class="c-icon"><i class="fas ${icons[t.c]}"></i></div><div><div style="font-weight:800">${t.n}</div><small style="color:var(--p)">${t.c}</small></div></div><div style="font-size:13px;margin-top:5px">📍 ${t.l} • ⭐ ${t.r}</div><button class="btn ${ok?'b-u':'b-p'}" onclick="hC(${t.id})">${ok?'WhatsApp':'Ver Contacto (1 Cr)'}</button>`;
+        l.appendChild(div);
     });
-}
-
-function getContact(id) {
-    if (credits <= 0) {
-        alert("Créditos insuficientes. Por favor, recarregue via M-Pesa ou e-Mola.");
-        return;
-    }
-    const s = services.find(x => x.id === id);
-    if(confirm(`Usar 1 crédito para contactar ${s.name}?`)) {
-        credits--;
-        updateUI();
-        window.open(`https://wa.me/${s.phone}?text=Olá, vi o seu perfil no Maputo Services.`);
-    }
-}
-
-function buyCredits() {
-    alert("📱 RECARGA DE CRÉDITOS\n-------------------\nEnvia o valor (100MT = 10 Cr.) para:\n\nM-Pesa: 856113036\ne-Mola: 873213896\n\nDepois envia o comprovativo no WhatsApp!");
-    window.open("https://wa.me/258856113036?text=Quero recarregar créditos para o Maputo Services");
-}
-
-function openModal() { document.getElementById("register-modal").style.display = "block"; }
-function closeModal() { document.getElementById("register-modal").style.display = "none"; }
-
-function sendRegistration() {
-    const n = document.getElementById("reg-name").value;
-    const c = document.getElementById("reg-cat").value;
-    const p = document.getElementById("reg-phone").value;
-    if(!n || !c || !p) return alert("Preencha os campos!");
-    
-    const msg = encodeURIComponent(`NOVA INSCRIÇÃO:\nNome: ${n}\nCat: ${c}\nTel: ${p}`);
-    window.open(`https://wa.me/258856113036?text=${msg}`);
-    closeModal();
-}
-
-document.getElementById("search").addEventListener("input", (e) => {
-    const term = e.target.value.toLowerCase();
-    render(services.filter(s => s.category.toLowerCase().includes(term) || s.name.toLowerCase().includes(term)));
-});
-
-updateUI();
-render(services);
-</script>
-</body>
-</html>
+};
+const hC = (id) => {
+    const t = techs.find(x => x.id === id); if(un.includes(id)) { window.open(`https://wa.me/${t.p}?text=Olá`); return; }
+    if(cr<=0){ alert("Sem créditos!"); return; }
+    if(confirm("Gastar 1 crédito?")){ cr--; un.push(id); up(); ren(); window.open(`https://wa.me/${t.p}?text=Olá`); }
+};
+const buy = () => window.open(`https://wa.me/${myNum}?text=Quero_carregar_creditos`);
+const valV = () => {
+    const i = document.getElementById("v-in").value, v = {"ALPHA-10":10, "BETA-25":25, "GOLD-70":70};
+    if(v[i]){ cr=parseInt(cr)+v[i]; up(); alert("Ativado!"); ren(); document.getElementById("v-in").value=""; } else alert("Inválido!");
+};
+const fCat = (c) => { document.querySelectorAll('.f-btn').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); ren(c==='Todos'?techs:techs.filter(t=>t.c===c)); };
+const shM = (s) => document.getElementById("m").style.display = s?'block':'none';
+const sReg = () => { window.open(`https://wa.me/${myNum}?text=Registo:${document.getElementById("rn").value}`); shM(0); };
+document.getElementById("src").addEventListener("input", e => { const t = e.target.value.toLowerCase(); ren(techs.filter(x => x.n.toLowerCase().includes(t) || x.l.toLowerCase().includes(t) || x.c.toLowerCase().includes(t))); });
+up(); ren();
+</script></body></html>
