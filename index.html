@@ -15,10 +15,17 @@ button { cursor:pointer; }
 <body>
 
 <h1>Mini Smart Africa</h1>
+
+<!-- Champ pour le client -->
+<input type="text" id="clientNumber" placeholder="Votre WhatsApp ici (ex: +2588...)">
+
+<!-- Barre de recherche -->
 <input type="text" id="search" placeholder="Procure: categoria, bairro, competência...">
+
 <div id="results"></div>
 
 <script>
+// Données de test
 const artisans = [
   {cat:'frio', nome:'Refri-Maputo Lda', bairro:'Alto Maé', preco:2, competencia:'PME especializada'},
   {cat:'frio', nome:'Mestre Momed', bairro:'Matola T3', preco:2, competencia:'Artisan local'},
@@ -26,13 +33,15 @@ const artisans = [
   {cat:'limpeza', nome:'Clean Force', bairro:'Polana', preco:2, competencia:'PME'}
 ];
 
+// Numéros fixes de paiement
 const mpesa = '+258856113036';
 const emola = '+258873213896';
-const whatsappTest = '+258873213896'; // ton Movitel WhatsApp Business pour test client
 
+// Normalisation pour recherche
 function normalize(str){ return str.toLowerCase(); }
 
-document.getElementById('search').addEventListener('input',()=>{
+// Recherche dynamique
+document.getElementById('search').addEventListener('input', ()=>{
   const term = normalize(document.getElementById('search').value);
   const results = artisans.filter(a=>{
     return normalize(a.cat).includes(term) || normalize(a.bairro).includes(term) || normalize(a.competencia).includes(term) || normalize(a.nome).includes(term);
@@ -49,10 +58,15 @@ document.getElementById('search').addEventListener('input',()=>{
   });
 });
 
+// Fonction pour envoyer WhatsApp au client
 function enviarMsg(nome,bairro,competencia,preco){
+  const clientNumber = document.getElementById('clientNumber').value;
+  if(!clientNumber){ alert("Insira seu número WhatsApp antes de enviar!"); return; }
+
   const mensagem = `Olá!\nQuero informações sobre:\n- Nome: ${nome}\n- Bairro: ${bairro}\n- Competência: ${competencia}\n- Preço: ${preco} créditos\n\nFavor transferir o valor para:\n- Mpesa: ${mpesa}\n- Emola: ${emola}\nObrigado!`;
-  // ici on ouvre le WhatsApp du client pour le test
-  const url = `https://wa.me/${whatsappTest.replace(/\D/g,'')}?text=${encodeURIComponent(mensagem)}`;
+  
+  // Ouvre WhatsApp du client
+  const url = `https://wa.me/${clientNumber.replace(/\D/g,'')}?text=${encodeURIComponent(mensagem)}`;
   window.open(url,'_blank');
 }
 </script>
