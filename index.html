@@ -33,7 +33,7 @@
             <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500"></i>
             <input type="text" id="search" autocomplete="off"
                 class="w-full pl-12 pr-4 py-4 bg-slate-800/50 border border-slate-700 rounded-2xl focus:ring-2 focus:ring-yellow-500 outline-none transition-all placeholder:text-slate-600 text-white"
-                placeholder="Ex: Fuga, AC, Curto, Matola...">
+                placeholder="Ex: Fuga, AC, Curto, Matola, Oficina...">
         </div>
 
         <div id="results" class="space-y-4"></div>
@@ -51,11 +51,11 @@
             <div class="space-y-3 mb-6 text-sm">
                 <div class="flex items-center justify-between p-3 bg-slate-800 rounded-xl border border-slate-700 text-white">
                     <span class="text-slate-400 font-bold uppercase">M-Pesa</span>
-                    <span class="font-mono font-bold text-yellow-500">85 611 3036</span>
+                    <span class="font-mono font-bold text-yellow-500 text-lg">85 611 3036</span>
                 </div>
                 <div class="flex items-center justify-between p-3 bg-slate-800 rounded-xl border border-slate-700 text-white">
                     <span class="text-slate-400 font-bold uppercase">e-Mola</span>
-                    <span class="font-mono font-bold text-orange-500">87 321 3896</span>
+                    <span class="font-mono font-bold text-orange-500 text-lg">87 321 3896</span>
                 </div>
             </div>
             <div class="flex flex-col gap-3">
@@ -68,35 +68,57 @@
     <script>
         const artisans = [
             // --- ❄️ FRIO ---
-            {id:'F01', cat:'Frio', nome:'Refri-Maputo Lda', bairro:'Alto Maé', preco:75, desc:'PME especializada em AC e refrigeração comercial'},
-            {id:'F02', cat:'Frio', nome:'Mestre Momed AC', bairro:'Matola T3', preco:30, desc:'Artisan local - Especialista em reparação rápida'},
-            {id:'F03', cat:'Frio', nome:'Clima-Moz', bairro:'Polana / Sommerschield', preco:100, desc:'PME reconhecida - Instalação industrial e AVAC'},
-            {id:'F04', cat:'Frio', nome:'Gelo-Tech', bairro:'Benfica / Zimpeto', preco:50, desc:'PME - Assistência técnica em geleiras e arcas'},
-            {id:'F06', cat:'Frio', nome:'Frimec SA', bairro:'Matola Rio', preco:250, desc:'Grande empresa - Projectos AVAC industriais'},
-            {id:'F19', cat:'Frio', nome:'PolarTech Lda', bairro:'Av. Eduardo Mondlane', preco:150, desc:'Grande empresa - Climatização central certificada'},
-            {id:'F24', cat:'Frio', nome:'Mestre Celso Frio', bairro:'Laulane', preco:30, desc:'Artisan local - Reparação de compressores'},
+            {id:'F01', cat:'Frio', nome:'Refri-Maputo Lda', tel:'+258 84 235 4805', bairro:'Alto Maé', preco:75, desc:'PME especializada em AC comercial'},
+            {id:'F02', cat:'Frio', nome:'Mestre Momed AC', tel:'+258 84 567 8901', bairro:'Matola T3', preco:30, desc:'Artisan local - Reparação rápida'},
+            {id:'F03', cat:'Frio', nome:'Clima-Moz', tel:'+258 82 300 4567', bairro:'Polana / Sommerschield', preco:100, desc:'PME reconhecida - AVAC industrial'},
+            {id:'F04', cat:'Frio', nome:'Gelo-Tech', tel:'+258 87 123 4567', bairro:'Benfica / Zimpeto', preco:50, desc:'PME - Assistência em geleiras e arcas'},
+            {id:'F05', cat:'Frio', nome:'Assistência Total AC', tel:'+258 84 990 0112', bairro:'Bairro Central', preco:35, desc:'Artisan - Manutenção de split doméstico'},
+            {id:'F06', cat:'Frio', nome:'Frimec SA', tel:'+258 87 600 1001', bairro:'Matola Rio', preco:250, desc:'Grande empresa - Projectos AVAC'},
+            {id:'F07', cat:'Frio', nome:'DR FRIO', tel:'+258 82 450 3321', bairro:'Maputo', preco:50, desc:'PME - Recarga de gás e fugas'},
+            {id:'F08', cat:'Frio', nome:'Eagle-X Lda', tel:'+258 84 600 2211', bairro:'Maputo', preco:50, desc:'PME - Assistência multimarca'},
+            {id:'F19', cat:'Frio', nome:'PolarTech Lda', tel:'+258 85 777 8899', bairro:'Av. Eduardo Mondlane', preco:150, desc:'Grande empresa - Climatização central'},
+            {id:'F24', cat:'Frio', nome:'Mestre Celso Frio', tel:'+258 84 333 5566', bairro:'Laulane', preco:30, desc:'Artisan local - Reparação compressores'},
+            {id:'F25', cat:'Frio', nome:'Arctic Services Lda', tel:'+258 87 444 6677', bairro:'Av. Guerra Popular', preco:200, desc:'Grande empresa - AVAC industrial'},
 
             // --- ⚡ ELÉCTRICA ---
-            {id:'E01', cat:'Elétrica', nome:'Sengelec Moçambique', bairro:'Maputo Cidade B.O', preco:200, desc:'Grande empresa - Média tensão e quadros complexos'},
-            {id:'E05', cat:'Elétrica', nome:'Volt-Maputo', bairro:'Costa do Sol / Triunfo', preco:80, desc:'PME - Instalações elétricas modernas e LED'},
-            {id:'E07', cat:'Elétrica', nome:'Electro-Moz-Solar', bairro:'Matola', preco:100, desc:'PME - Instalação de sistemas solares e inversores'},
-            {id:'E11', cat:'Elétrica', nome:'Electricista João', bairro:'Laulane / Hulene', preco:20, desc:'Artisan local - Reparação de curtos e tomadas'},
-            {id:'E14', cat:'Elétrica', nome:'Mestre António', bairro:'Bairro Central', preco:30, desc:'Artisan local - Electricista residencial 24h'},
+            {id:'E01', cat:'Elétrica', nome:'Sengelec Moçambique', tel:'+258 84 224 2424', bairro:'Maputo B.O', preco:200, desc:'Grande empresa - Média tensão e quadros'},
+            {id:'E02', cat:'Elétrica', nome:'Electricidade Matola', tel:'+258 84 469 5000', bairro:'Av. Samora Machel', preco:150, desc:'Grande empresa - Assistência certificada'},
+            {id:'E04', cat:'Elétrica', nome:'Electro-Serv MZ', tel:'+258 82 323 5590', bairro:'Machava', preco:50, desc:'PME - Manutenção residencial e industrial'},
+            {id:'E06', cat:'Elétrica', nome:'ElectroShadd', tel:'+258 84 876 4954', bairro:'Malhampsene', preco:50, desc:'PME - Comandos e proteção elétrica'},
+            {id:'E07', cat:'Elétrica', nome:'Electro-Moz-Solar', tel:'+258 84 106 9443', bairro:'Matola', preco:100, desc:'PME - Sistemas solares e inversores'},
+            {id:'E11', cat:'Elétrica', nome:'Electricista João', tel:'+258 84 000 1122', bairro:'Laulane', preco:20, desc:'Artisan - Curtos e tomadas'},
+            {id:'E14', cat:'Elétrica', nome:'Mestre António', tel:'+258 82 111 2233', bairro:'Bairro Central', preco:30, desc:'Artisan - Elétrica residencial 24h'},
+            {id:'E15', cat:'Elétrica', nome:'Mestre Carlos Luz', tel:'+258 84 222 3344', bairro:'Matola Cidade', preco:30, desc:'Artisan - Disjuntores e fiação'},
 
             // --- 🚰 CANALIZADOR ---
-            {id:'C01', cat:'Canalizador', nome:'Isarte Construções', bairro:'Maputo / Matola', preco:75, desc:'PME - Canalização geral, esgotos e infiltrações'},
-            {id:'C03', cat:'Canalizador', nome:'Furos de Água MZ', bairro:'Zimpeto / Marracuene', preco:150, desc:'PME - Especialista em furos e bombas submersíveis'},
-            {id:'C04', cat:'Canalizador', nome:'Aderegás Moçambique', bairro:'Rua Damião de Góis', preco:120, desc:'PME - Redes de gás e água quente'},
-            {id:'C11', cat:'Canalizador', nome:'Mestre Ricardo Picheleiro', bairro:'Bairro Central', preco:30, desc:'Artisan local - Desentupimentos e torneiras'},
-
-            // --- 🚗 MECÂNICA ---
-            {id:'M01', cat:'Mecânica', nome:'Auto-Socorro 24h', bairro:'Av. Eduardo Mondlane', preco:200, desc:'Grande empresa - Reboque e assistência mecânica pesada'},
-            {id:'M04', cat:'Mecânica', nome:'MIDAS Matola', bairro:'Matola Cidade', preco:150, desc:'Grande empresa - Manutenção oficial e diagnósticos'},
-            {id:'M14', cat:'Mecânica', nome:'Garagem Móvel Matola', bairro:'Matola Gare', preco:40, desc:'Artisan local - Mecânico ao domicílio para socorro rápido'},
+            {id:'C01', cat:'Canalizador', nome:'Isarte Construções', tel:'+258 84 777 8899', bairro:'Maputo / Matola', preco:75, desc:'PME - Canalização, esgotos e infiltrações'},
+            {id:'C03', cat:'Canalizador', nome:'Furos de Água MZ', tel:'+258 84 000 5544', bairro:'Zimpeto', preco:150, desc:'PME - Furos e bombas submersíveis'},
+            {id:'C04', cat:'Canalizador', nome:'Aderegás Moçambique', tel:'+258 84 795 4014', bairro:'Rua Damião de Góis', preco:120, desc:'PME - Redes de gás e água quente'},
+            {id:'C05', cat:'Canalizador', nome:'Housefix Mozambique', tel:'+258 87 460 4631', bairro:'Rua da Alegria', preco:75, desc:'PME - Reparações hidráulicas'},
+            {id:'C11', cat:'Canalizador', nome:'Mestre Ricardo Picheleiro', tel:'+258 84 333 2211', bairro:'Bairro Central', preco:30, desc:'Artisan - Desentupimentos e torneiras'},
 
             // --- 🧹 LIMPEZA ---
-            {id:'L04', cat:'Limpeza', nome:'Nemchem Moçambique', bairro:'Matola / Joaquim Chissano', preco:250, desc:'Grande empresa - Higienização industrial certificada'},
-            {id:'L11', cat:'Limpeza', nome:'Lava-Sofás Maputo', bairro:'Bairro Central', preco:40, desc:'Artisan local - Limpeza a seco de estofos et carpetes'}
+            {id:'L04', cat:'Limpeza', nome:'Nemchem Moçambique', tel:'+258 85 010 2048', bairro:'Matola', preco:250, desc:'Grande empresa - Higienização industrial'},
+            {id:'L05', cat:'Limpeza', nome:'Amati Limpeza', tel:'+258 87 606 0770', bairro:'Bairro Fomento', preco:60, desc:'PME - Limpeza e manutenção'},
+            {id:'L11', cat:'Limpeza', nome:'Lava-Sofás Maputo', tel:'+258 82 666 7788', bairro:'Bairro Central', preco:40, desc:'Artisan - Limpeza de estofos'},
+            {id:'L12', cat:'Limpeza', nome:'Dona Brilhante', tel:'+258 84 777 8899', bairro:'Matola Cidade', preco:30, desc:'Artisan - Limpeza diária'},
+
+            // --- 📺 ELECTRÓNICA ---
+            {id:'T01', cat:'Electrónica', nome:'PC Doctor MZ', tel:'+258 82 111 2233', bairro:'Maputo', preco:60, desc:'PME - Reparação de computadores'},
+            {id:'T04', cat:'Electrónica', nome:'Netmoz LDA', tel:'+258 86 382 9820', bairro:'Matola', preco:75, desc:'PME - Redes informáticas e TI'},
+            {id:'T08', cat:'Electrónica', nome:'The GoodGuy', tel:'+258 82 004 0000', bairro:'Av. 24 de Julho', preco:100, desc:'PME - Especialista Apple / High-End'},
+            {id:'T12', cat:'Electrónica', nome:'Reparação TV Led', tel:'+258 84 777 8899', bairro:'Bairro Central', preco:35, desc:'Artisan - Ecrãs e fontes de TV'},
+
+            // --- 🔑 SERRALHEIRO ---
+            {id:'S01', cat:'Serralheiro', nome:'Chaveiro Maputo 24h', tel:'+258 82 111 2233', bairro:'Maputo', preco:150, desc:'Grande empresa - Cofres e chaves'},
+            {id:'S06', cat:'Serralheiro', nome:'Locksmith Maputo', tel:'+258 85 768 5552', bairro:'Av. Maguiguana', preco:80, desc:'PME - Alta segurança'},
+            {id:'S13', cat:'Serralheiro', nome:'Chaveiro Langa', tel:'+258 84 776 7129', bairro:'Rotunda de Khobe', preco:25, desc:'Artisan - Cópia e reparação'},
+
+            // --- 🚗 MECÂNICA ---
+            {id:'M01', cat:'Mecânica', nome:'Auto-Socorro 24h', tel:'+258 82 111 2233', bairro:'Av. Eduardo Mondlane', preco:200, desc:'Grande empresa - Reboque 24h'},
+            {id:'M04', cat:'Mecânica', nome:'MIDAS Matola', tel:'+258 21 788 030', bairro:'Matola Cidade', preco:150, desc:'Grande empresa - Manutenção oficial'},
+            {id:'M11', cat:'Mecânica', nome:'Oficina Mussa', tel:'+258 82 000 1122', bairro:'Bairro Central', preco:60, desc:'PME - Mecânica e motores'},
+            {id:'M14', cat:'Mecânica', nome:'Garagem Móvel Matola', tel:'+258 82 333 4455', bairro:'Matola Gare', preco:40, desc:'Artisan - Socorro mecânico domicílio'}
         ];
 
         const container = document.getElementById('results');
@@ -105,7 +127,7 @@
         function render(list) {
             container.innerHTML = '';
             if(list.length === 0) {
-                container.innerHTML = `<p class="text-center text-slate-500 py-10 italic text-sm uppercase font-bold tracking-widest">Nenhum resultado encontrado</p>`;
+                container.innerHTML = `<p class="text-center text-slate-500 py-10 italic text-sm font-bold uppercase tracking-widest">Nenhum prestador encontrado</p>`;
                 return;
             }
             list.forEach(a => {
@@ -119,7 +141,7 @@
                                 <p class="text-slate-500 text-[10px] flex items-center gap-1 font-black uppercase"><i data-lucide="map-pin" class="w-3 h-3 text-red-500"></i> ${a.bairro}</p>
                             </div>
                             <div class="text-right pl-2">
-                                <p class="text-xl font-black text-white">${a.preco}<span class="text-[10px] ml-0.5 text-slate-500 uppercase italic">MT</span></p>
+                                <p class="text-xl font-black text-white">${a.preco}<span class="text-[10px] ml-0.5 text-slate-500 uppercase">MT</span></p>
                             </div>
                         </div>
                         <button onclick="openModal('${a.id}')" class="w-full py-3 bg-slate-700 hover:bg-yellow-500 hover:text-black rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 uppercase tracking-tighter">
@@ -131,29 +153,24 @@
             lucide.createIcons();
         }
 
-        // MOTEUR DE RECHERCHE INTELLIGENT
         document.getElementById('search').oninput = (e) => {
             const query = e.target.value.toLowerCase().trim();
-            
             const synonyms = {
-                'frio': 'ac ar condicionado geladeira arca split gas hvac ventilador climatização frio gelar recarga',
+                'frio': 'ac ar condicionado geladeira arca split gas hvac climatização frio gelar recarga split',
                 'elétrica': 'luz energia curto circuito painel solar inversor edm lampada tomada disjuntor quadro fio choque',
-                'canalizador': 'agua picheleiro esgoto fuga cano torneira sanita infiltração bomba tanque pichela pichelar',
-                'limpeza': 'casa escritorio sofa tapete desinfecção nemchem brilho domestica higiene carpetes aspirar',
-                'electrónica': 'tv televisão computador pc laptop ecra display telemovel iphone samsung software monitor',
-                'mecânica': 'carro motor oleo travão pneu reboque oficina bateria suspensão chapa pintura injector oficina',
+                'canalizador': 'agua picheleiro esgoto fuga cano torneira sanita infiltração bomba tanque pichela furos',
+                'limpeza': 'casa escritorio sofa tapete desinfecção nemchem brilho domestica higiene carpetes estofos vidros',
+                'electrónica': 'tv televisão computador pc laptop ecra display telemovel iphone software monitor chips',
+                'mecânica': 'carro motor oleo travão pneu reboque oficina bateria suspensão chapa pintura injector oficina auto socorro',
                 'serralheiro': 'chave fechadura portão grade ferro soldadura cofre chaveiro chave serralharia porta'
             };
 
             const filtered = artisans.filter(a => {
                 const catTags = synonyms[a.cat.toLowerCase()] || '';
                 const searchContent = `${a.cat} ${a.nome} ${a.bairro} ${a.desc} ${catTags}`.toLowerCase();
-                
-                // Vérifie que chaque mot tapé existe quelque part dans la fiche
                 const terms = query.split(' ');
                 return terms.every(term => searchContent.includes(term));
             });
-            
             render(filtered);
         };
 
@@ -168,15 +185,23 @@
         }
 
         document.getElementById('btnConfirm').onclick = () => {
-            const mpesa = '856113036';
-            const msg = `*PEDIDO SMART AFRICA*\n--------------------------\nID: ${currentArtisan.id}\nServiço: ${currentArtisan.cat}\nNome: ${currentArtisan.nome}\nLocal: ${currentArtisan.bairro}\nValor: ${currentArtisan.preco} MT\n--------------------------\nQuero pagar agora para receber o contacto.`;
-            window.open(`https://wa.me/258${mpesa}?text=${encodeURIComponent(msg)}`);
+            const mpesaAdmin = '856113036';
+            const msg = `*NOVO PEDIDO SMART AFRICA*
+--------------------------
+ID: ${currentArtisan.id}
+PRESTADOR: ${currentArtisan.nome}
+LOCAL: ${currentArtisan.bairro}
+VALOR TAXA: ${currentArtisan.preco} MT
+--------------------------
+*NÚMERO DO ARTISAN:* ${currentArtisan.tel} 
+--------------------------
+_Confirme o pagamento M-Pesa/E-mola e envie este contacto ao cliente._`;
+
+            window.open(`https://wa.me/258${mpesaAdmin}?text=${encodeURIComponent(msg)}`);
             closeModal();
         };
 
-        // Lancement initial
         render(artisans);
     </script>
 </body>
-    </html>
-    
+</html>
