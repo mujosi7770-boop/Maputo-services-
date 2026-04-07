@@ -1,112 +1,57 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mini Smart Africa - Startup</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; background: #f5f5f5; }
-    input { margin: 5px 0; padding: 10px; width: 100%; max-width: 300px; }
-    button { padding: 10px 20px; margin-top: 10px; cursor: pointer; }
-    .result { border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Smart Africa Prototype</title>
+<style>
+body { font-family: Arial, sans-serif; background:#111; color:#fff; margin:0; padding:20px; }
+input, button { padding:10px; margin:5px 0; border-radius:8px; border:none; font-weight:bold; }
+input { width:100%; }
+button { cursor:pointer; }
+.card { background:#222; padding:15px; border-radius:12px; margin-bottom:10px; }
+</style>
 </head>
 <body>
 
-<h2>🔎 Trouver un service</h2>
-<input id="cat" placeholder="Catégorie (Frio, Électrica...)" />
-<input id="zone" placeholder="Quartier (Matola, Polana...)" />
-<input id="exp" placeholder="Compétence (Artisan, PME...)" />
-
-<button onclick="search()">Rechercher</button>
-
+<h1>Mini Smart Africa</h1>
+<input type="text" id="search" placeholder="Procure: categoria, bairro, competência...">
 <div id="results"></div>
 
-<button onclick="sendWhatsApp()">📩 Commander sur WhatsApp</button>
-
 <script>
-// ==== DONNÉES ====
-const data = [
-  {categorie:"FRIO", nom:"Refri-Maputo Lda", quartier:"Alto Maé", numero:"+258842354805", expertise:"PME spécialisée"},
-  {categorie:"FRIO", nom:"Mestre Momed AC", quartier:"Matola T3", numero:"+258845678901", expertise:"Artisan local"},
-  {categorie:"FRIO", nom:"Clima-Moz", quartier:"Polana / Sommerschield", numero:"+258823004567", expertise:"PME reconnue"},
-  {categorie:"ELÉCTRICA", nom:"Volt-Maputo", quartier:"Costa do Sol", numero:"+258850009988", expertise:"PME"},
-  {categorie:"CANALIZADOR", nom:"Isarte Construções", quartier:"Maputo / Matola", numero:"+258847778899", expertise:"PME"},
-  {categorie:"LIMPEZA", nom:"Clean Force Lda", quartier:"Polana", numero:"+258821112233", expertise:"PME"},
-  {categorie:"SERRALHEIRO", nom:"Chaveiro Maputo 24h", quartier:"Maputo", numero:"+258821112233", expertise:"Grande entreprise"},
-  {categorie:"MECÂNICA", nom:"Auto-Socorro 24h", quartier:"Av. Eduardo Mondlane, Maputo", numero:"+258821112233", expertise:"Grande entreprise"}
+const artisans = [
+  {cat:'frio', nome:'Refri-Maputo Lda', bairro:'Alto Maé', preco:2, competencia:'PME especializada'},
+  {cat:'frio', nome:'Mestre Momed', bairro:'Matola T3', preco:2, competencia:'Artisan local'},
+  {cat:'eletrica', nome:'Sengelec MZ', bairro:'Maputo Cidade', preco:50, competencia:'Grande entreprise'},
+  {cat:'limpeza', nome:'Clean Force', bairro:'Polana', preco:2, competencia:'PME'}
 ];
 
-// ==== PRIX SELON COMPÉTENCE ====
-function getPrice(exp) {
-  if (exp.includes("Artisan")) return 50;
-  if (exp.includes("Grande")) return 100;
-  if (exp.includes("PME reconnue")) return 1000;
-  if (exp.includes("PME")) return 500;
-  return 50;
-}
+const mpesa = '+258856113036';
+const emola = '+258873213896';
 
-// ==== RECHERCHE ====
-function search() {
-  const cat = document.getElementById("cat").value.toLowerCase();
-  const zone = document.getElementById("zone").value.toLowerCase();
-  const exp = document.getElementById("exp").value.toLowerCase();
+function normalize(str){ return str.toLowerCase(); }
 
-  const results = data.filter(item =>
-    item.categorie.toLowerCase().includes(cat) &&
-    item.quartier.toLowerCase().includes(zone) &&
-    item.expertise.toLowerCase().includes(exp)
-  );
-
-  window.filtered = results; // pour WhatsApp
-
-  let output = "";
-  results.forEach(r => {
-    output += `
-      <div class="result">
-        <b>${r.nom}</b><br>
-        📍 ${r.quartier}<br>
-        🧠 ${r.expertise}<br>
-        💰 ${getPrice(r.expertise)} MT
-      </div>
-    `;
+document.getElementById('search').addEventListener('input',()=>{
+  const term = normalize(document.getElementById('search').value);
+  const results = artisans.filter(a=>{
+    return normalize(a.cat).includes(term) || normalize(a.bairro).includes(term) || normalize(a.competencia).includes(term) || normalize(a.nome).includes(term);
   });
+  const container = document.getElementById('results');
+  container.innerHTML = '';
+  if(results.length===0){ container.innerHTML='<p>Nenhum resultado encontrado 😅</p>'; return; }
 
-  if(results.length === 0) output = "<p>Aucun résultat trouvé.</p>";
-
-  document.getElementById("results").innerHTML = output;
-}
-
-// ==== ENVOI SUR WHATSAPP ====
-function sendWhatsApp() {
-  if (!window.filtered || window.filtered.length === 0) {
-    alert("Fais une recherche d'abord !");
-    return;
-  }
-
-  let message = "🔎 Nouvelle demande client:\n\n";
-
-  window.filtered.forEach(r => {
-    message += `• ${r.nom} (${r.quartier}) - ${r.expertise} - ${getPrice(r.expertise)} MT\n`;
+  results.forEach(a=>{
+    const div = document.createElement('div');
+    div.className='card';
+    div.innerHTML = `<b>${a.nome}</b> (${a.cat.toUpperCase()})<br>${a.bairro}<br>Competência: ${a.competencia}<br>Preço: ${a.preco} CR <button onclick="enviarMsg('${a.nome}', '${a.bairro}', '${a.competencia}', ${a.preco})">Enviar Pedido WhatsApp</button>`;
+    container.appendChild(div);
   });
+});
 
-  message += `
------------------------
-💳 Paiement:
-M-Pesa: 856113036
-e-Mola: 873213896
-
-Envoyez preuve + code unique.
-`;
-
-  const phone = "258856113036"; // WhatsApp à toi (Mpesa)
-  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-  window.open(url, "_blank");
-}
-
-// ==== CODE UNIQUE SIMPLE ====
-function generateCode() {
-  return "CODE-" + Math.floor(Math.random()*100000);
+function enviarMsg(nome,bairro,competencia,preco){
+  const mensagem = `Olá!\nQuero informações sobre:\n- Nome: ${nome}\n- Bairro: ${bairro}\n- Competência: ${competencia}\n- Preço: ${preco} créditos\n\nFavor transferir o valor para:\n- Mpesa: ${mpesa}\n- Emola: ${emola}\nObrigado!`;
+  const url = `https://wa.me/${mpesa.replace(/\D/g,'')}?text=${encodeURIComponent(mensagem)}`;
+  window.open(url,'_blank');
 }
 </script>
 
