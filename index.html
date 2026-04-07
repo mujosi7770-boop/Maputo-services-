@@ -3,196 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Africa | Serviços Pro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Smart Africa | Catálogo Pro</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; }
-        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(51, 65, 85, 0.5); }
-        .card-anim { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .card-anim:active { transform: scale(0.97); }
-        .modal-blur { backdrop-filter: blur(8px); animation: fadeIn 0.2s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
+        :root { --main: #eab308; --bg: #0f172a; --card: #1e293b; }
+        body { font-family: sans-serif; background: var(--bg); color: white; margin: 0; padding: 15px; }
+        
+        /* HEADER & RECHERCHE */
+        .header { text-align: center; padding: 10px 0; border-bottom: 1px solid #334155; margin-bottom: 20px; }
+        .header h1 { color: var(--main); margin: 0; font-size: 22px; letter-spacing: 2px; }
+        
+        .search-box { position: sticky; top: 10px; z-index: 10; margin-bottom: 20px; }
+        #search { 
+            width: 100%; padding: 18px; border-radius: 15px; border: 2px solid #334155; 
+            background: #111827; color: white; font-size: 16px; box-sizing: border-box; outline: none;
+        }
+        #search:focus { border-color: var(--main); }
+
+        /* CARTES */
+        .card { background: var(--card); border-radius: 20px; padding: 15px; margin-bottom: 15px; border: 1px solid #334155; }
+        .card-top { display: flex; justify-content: space-between; align-items: center; }
+        .tag { background: rgba(234, 179, 8, 0.1); color: var(--main); padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; }
+        .price { font-size: 20px; font-weight: 800; }
+        .name { font-size: 18px; font-weight: bold; margin: 10px 0 5px 0; }
+        .desc { color: #94a3b8; font-size: 13px; min-height: 32px; }
+        .loc { font-size: 11px; color: #64748b; margin-top: 10px; font-weight: bold; }
+        
+        .btn-order { 
+            width: 100%; background: var(--main); color: #000; border: none; padding: 12px; 
+            border-radius: 12px; font-weight: 800; margin-top: 15px; cursor: pointer; font-size: 14px;
+        }
+
+        /* MODAL DE PAIEMENT (Le système que tu voulais) */
+        .modal { 
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); 
+            z-index: 100; align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-content { 
+            background: #111827; border: 1px solid #334155; width: 100%; max-width: 350px; 
+            padding: 25px; border-radius: 30px; text-align: center;
+        }
+        .pay-box { background: #1e293b; padding: 12px; border-radius: 15px; margin: 10px 0; border: 1px solid #334155; }
+        .pay-label { font-size: 10px; color: #64748b; font-weight: bold; display: block; margin-bottom: 5px; }
+        .pay-num { font-family: monospace; font-size: 18px; color: var(--main); font-weight: bold; }
+        .btn-confirm { background: #22c55e; color: white; width: 100%; padding: 15px; border-radius: 15px; border: none; font-weight: bold; margin-top: 15px; cursor: pointer; }
+        .btn-cancel { background: none; color: #64748b; border: none; margin-top: 15px; cursor: pointer; font-size: 12px; }
     </style>
 </head>
-<body class="text-slate-100 min-h-screen">
+<body>
 
-    <header class="glass sticky top-0 z-50 p-4">
-        <div class="max-w-xl mx-auto flex justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-extrabold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent leading-none">SMART AFRICA</h1>
-                <p class="text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase mt-1">Conexões de Confiança • MZ</p>
+    <div class="header"><h1>SMART AFRICA</h1></div>
+
+    <div class="search-box">
+        <input type="text" id="search" placeholder="Pesquisar (Ex: Fuga, AC, Matola...)">
+    </div>
+
+    <div id="results"></div>
+
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-top:0">Confirmar Pedido</h2>
+            <p style="color:#94a3b8; font-size:14px">Taxa de Conexão: <b id="modalPrice" style="color:white">--</b> MT</p>
+            
+            <div class="pay-box">
+                <span class="pay-label text-red">M-PESA</span>
+                <span class="pay-num">85 611 3036</span>
             </div>
-            <div class="h-10 w-10 bg-yellow-500/10 rounded-2xl flex items-center justify-center border border-yellow-500/20">
-                <i data-lucide="shield-check" class="w-6 h-6 text-yellow-500"></i>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-xl mx-auto p-4 space-y-6">
-        
-        <div class="relative group">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <i data-lucide="search" class="w-5 h-5 text-slate-500 group-focus-within:text-yellow-500 transition-colors"></i>
-            </div>
-            <input type="text" id="search" 
-                class="w-full pl-12 pr-4 py-5 bg-slate-900/50 border border-slate-800 rounded-3xl outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500 transition-all text-lg placeholder:text-slate-600 shadow-2xl"
-                placeholder="Ex: Fuga de água, Curto, Matola...">
-        </div>
-
-        <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2">
-            <button onclick="quickSearch('Frio')" class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-full text-xs font-bold whitespace-nowrap hover:bg-yellow-500 hover:text-black transition-all">❄️ AC/Frio</button>
-            <button onclick="quickSearch('Elétrica')" class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-full text-xs font-bold whitespace-nowrap hover:bg-yellow-500 hover:text-black transition-all">⚡ Elétrica</button>
-            <button onclick="quickSearch('Canalizador')" class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-full text-xs font-bold whitespace-nowrap hover:bg-yellow-500 hover:text-black transition-all">🚰 Canalizador</button>
-            <button onclick="quickSearch('Mecânica')" class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-full text-xs font-bold whitespace-nowrap hover:bg-yellow-500 hover:text-black transition-all">🚗 Mecânica</button>
-        </div>
-
-        <div id="results" class="space-y-4">
-            </div>
-    </main>
-
-    <div id="paymentModal" class="fixed inset-0 z-[100] hidden items-end sm:items-center justify-center p-4 modal-blur bg-black/60">
-        <div class="bg-slate-900 w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl border border-slate-800">
-            <div class="w-12 h-1.5 bg-slate-800 rounded-full mx-auto mb-6 sm:hidden"></div>
-            <div class="text-center">
-                <h2 class="text-2xl font-extrabold text-white mb-2">Conectar Agora</h2>
-                <p class="text-slate-400 text-sm mb-8">Pague a taxa de <span id="modalPrice" class="text-yellow-500 font-black text-xl">--</span> MT para libertar o contacto verificado.</p>
+            <div class="pay-box">
+                <span class="pay-label">E-MOLA</span>
+                <span class="pay-num">87 321 3896</span>
             </div>
             
-            <div class="space-y-4 mb-8">
-                <div class="flex items-center justify-between p-4 bg-slate-950 rounded-2xl border border-slate-800 group active:border-yellow-500 transition-all">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-red-600/20 rounded-xl flex items-center justify-center text-red-500 font-black italic">M</div>
-                        <div><p class="text-[10px] text-slate-500 font-bold uppercase">M-Pesa</p><p class="text-white font-mono font-bold">85 611 3036</p></div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between p-4 bg-slate-950 rounded-2xl border border-slate-800 group active:border-orange-500 transition-all">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-orange-600/20 rounded-xl flex items-center justify-center text-orange-500 font-black italic">E</div>
-                        <div><p class="text-[10px] text-slate-500 font-bold uppercase">e-Mola</p><p class="text-white font-mono font-bold">87 321 3896</p></div>
-                    </div>
-                </div>
-            </div>
-
-            <button id="btnConfirm" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-black py-5 rounded-2xl transition shadow-xl uppercase text-sm tracking-widest active:scale-95">Enviar Comprovativo</button>
-            <button onclick="closeModal()" class="w-full mt-4 text-slate-500 text-xs font-bold hover:text-white transition">Voltar</button>
+            <button class="btn-confirm" onclick="confirmPayment()">ENVIAR COMPROVATIVO</button>
+            <button class="btn-cancel" onclick="closeModal()">CANCELAR</button>
         </div>
     </div>
 
     <script>
+        // BASE DE DONNÉES COMPLÈTE
         const artisans = [
-            // --- ⚡ ELÉCTRICA ---
-            {id:'E01', cat:'Elétrica', nome:'Sengelec Moçambique', bairro:'Maputo B.O', preco:200, desc:'Industrial, Quadros, Alta Tensão'},
-            {id:'E04', cat:'Elétrica', nome:'Electro-Serv MZ', bairro:'Machava', preco:50, desc:'Doméstico e Comercial'},
-            {id:'E06', cat:'Elétrica', nome:'ElectroShadd', bairro:'Malhampsene', preco:50, desc:'Comandos e Automação'},
-            {id:'E07', cat:'Elétrica', nome:'Electro-Moz-Solar', bairro:'Matola', preco:100, desc:'Energia Solar, Inversores'},
-            {id:'E11', cat:'Elétrica', nome:'Electricista João', bairro:'Laulane', preco:25, desc:'Reparações de emergência'},
-            {id:'E15', cat:'Elétrica', nome:'Mestre António', bairro:'Bairro Central', preco:30, desc:'Piquete 24h residencial'},
-
-            // --- 🚗 MECÂNICA ---
-            {id:'M01', cat:'Mecânica', nome:'Auto-Socorro 24h', bairro:'Av. Eduardo Mondlane', preco:200, desc:'Reboque e Mecânica Pesada'},
-            {id:'M04', cat:'Mecânica', nome:'MIDAS Matola', bairro:'Matola Cidade', preco:150, desc:'Revisão e Diagnóstico Oficial'},
-            {id:'M11', cat:'Mecânica', nome:'Oficina Mussa', bairro:'Bairro Central', preco:60, desc:'Reparação de Motores'},
-            {id:'M14', cat:'Mecânica', nome:'Garagem Móvel', bairro:'Matola Gare', preco:40, desc:'Mecânico ao Domicílio'},
-
-            // --- ❄️ FRIO ---
-            {id:'F01', cat:'Frio', nome:'Refri-Maputo Lda', bairro:'Alto Maé', preco:75, desc:'AC, Arcas e Geleiras'},
-            {id:'F03', cat:'Frio', nome:'Clima-Moz', bairro:'Polana', preco:100, desc:'Instalações e AVAC'},
-            {id:'F06', cat:'Frio', nome:'Frimec SA', bairro:'Matola Rio', preco:250, desc:'Projectos Frio Industrial'},
-            {id:'F19', cat:'Frio', nome:'PolarTech Lda', bairro:'Av. Eduardo Mondlane', preco:150, desc:'Manutenção Certificada'},
-
-            // --- 🚰 CANALIZADOR ---
-            {id:'C01', cat:'Canalizador', nome:'Isarte Construções', bairro:'Maputo', preco:75, desc:'Água, Esgoto e Infiltrações'},
-            {id:'C03', cat:'Canalizador', nome:'Furos de Água MZ', bairro:'Zimpeto', preco:200, desc:'Furos, Bombas e Tanques'},
-            {id:'C11', cat:'Canalizador', nome:'Mestre Ricardo', bairro:'Bairro Central', preco:30, desc:'Picheleiro 24h'},
-
-            // --- 🧹 LIMPEZA ---
-            {id:'L04', cat:'Limpeza', nome:'Nemchem MZ', bairro:'Matola', preco:250, desc:'Higienização Hospitalar/Industrial'},
-            {id:'L11', cat:'Limpeza', nome:'Lava-Sofás Maputo', bairro:'Maputo', preco:40, desc:'Sofás, Carpetes e Colchões'}
+            {id:'E01', cat:'Elétrica', nome:'Sengelec Moçambique', bairro:'Maputo B.O', preco:200, desc:'Quadros e Média Tensão', tags:'luz curto circuito energia'},
+            {id:'E11', cat:'Elétrica', nome:'Electricista João', bairro:'Laulane', preco:25, desc:'Reparação de curtos e tomadas', tags:'luz fusivel lampada casa'},
+            {id:'F01', cat:'Frio', nome:'Refri-Maputo Lda', bairro:'Alto Maé', preco:75, desc:'AC, Arcas e Geleiras', tags:'geladeira ar condicionado gas'},
+            {id:'F02', cat:'Frio', nome:'Mestre Momed AC', bairro:'Matola T3', preco:35, desc:'Reparação de Split AC', tags:'geladeira frio gas'},
+            {id:'C01', cat:'Canalizador', nome:'Isarte Construções', bairro:'Maputo', preco:75, desc:'Fugas, Esgotos e Infiltrações', tags:'agua cano picheleiro'},
+            {id:'C11', cat:'Canalizador', nome:'Mestre Ricardo', bairro:'Bairro Central', preco:30, desc:'Desentupimentos e torneiras', tags:'agua sanita picheleiro'},
+            {id:'M01', cat:'Mecânica', nome:'Auto-Socorro 24h', bairro:'Maputo', preco:200, desc:'Reboque e assistência pesada', tags:'carro motor reboque oleo'},
+            {id:'L04', cat:'Limpeza', nome:'Nemchem MZ', bairro:'Matola', preco:250, desc:'Higiene Industrial Certificada', tags:'sofa tapete desinfecção'}
         ];
 
-        // MOTEUR DE RECHERCHE SURPUISSANT (Tags Cachés)
-        const tagsMap = {
-            'Frio': 'ac ar condicionado geladeira arca split gás ventoinha congelador climatização frio',
-            'Elétrica': 'luz curto circuito painel solar inversor edm disjuntor fiação tomada lâmpada fuso corrente',
-            'Canalizador': 'água picheleiro esgoto fuga cano torneira sanita infiltração furo bomba tanque pia pichela',
-            'Mecânica': 'carro motor óleo travão pneu reboque oficina bateria injector suspensão chapa pintura',
-            'Limpeza': 'casa escritório sofá tapete desinfecção nemchem brilho pós-obra doméstica higiene',
-            'Electrónica': 'tv computador pc laptop ecra display telemovel iphone samsung software'
-        };
+        let selectedArtisan = null;
 
-        const container = document.getElementById('results');
-        let currentArtisan = null;
-
-        function render(list) {
-            container.innerHTML = '';
-            list.forEach((a, index) => {
-                const card = document.createElement('div');
-                card.className = 'bg-slate-900/40 border border-slate-800 p-6 rounded-[2rem] card-anim hover:border-yellow-500/50 group relative overflow-hidden';
-                card.innerHTML = `
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-100 transition-opacity">
-                         <i data-lucide="external-link" class="w-4 h-4 text-yellow-500"></i>
-                    </div>
-                    <div class="flex justify-between items-start mb-5">
-                        <div class="space-y-1">
-                            <div class="flex items-center gap-2">
-                                <span class="px-2 py-0.5 bg-yellow-500/10 text-yellow-500 text-[9px] font-black uppercase rounded-md tracking-wider">${a.cat}</span>
-                                <span class="flex items-center gap-1 text-[9px] font-bold text-green-500 uppercase tracking-tighter"><i data-lucide="check-circle-2" class="w-3 h-3"></i> Verificado</span>
-                            </div>
-                            <h3 class="text-xl font-extrabold text-white">${a.nome}</h3>
-                            <p class="text-slate-400 text-xs font-medium">${a.desc}</p>
-                        </div>
-                        <div class="text-right">
-                            <span class="block text-2xl font-black text-white">${a.preco}<span class="text-xs text-slate-500 ml-1">MT</span></span>
-                            <span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Taxa Fixa</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between mt-6 pt-4 border-t border-slate-800/50">
-                        <div class="flex items-center gap-1 text-slate-500 text-[10px] font-black uppercase">
-                            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-red-500"></i> ${a.bairro}
-                        </div>
-                        <button onclick="openModal('${a.id}')" class="px-6 py-3 bg-yellow-500 text-black font-black rounded-xl text-xs uppercase tracking-tighter active:scale-90 transition-all">Solicitar</button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-            lucide.createIcons();
-        }
-
-        document.getElementById('search').oninput = (e) => {
-            const val = e.target.value.toLowerCase().trim();
+        // RECHERCHE SURPUISSANTE
+        document.getElementById('search').oninput = function(e) {
+            const query = e.target.value.toLowerCase().trim();
             const filtered = artisans.filter(a => {
-                const searchContent = `${a.nome} ${a.bairro} ${a.cat} ${a.desc} ${tagsMap[a.cat] || ''}`.toLowerCase();
-                return val.split(' ').every(term => searchContent.includes(term));
+                const searchStr = `${a.nome} ${a.cat} ${a.bairro} ${a.desc} ${a.tags}`.toLowerCase();
+                return searchStr.includes(query);
             });
             render(filtered);
         };
 
-        function quickSearch(cat) {
-            document.getElementById('search').value = cat;
-            document.getElementById('search').dispatchEvent(new Event('input'));
+        function render(list) {
+            const container = document.getElementById('results');
+            container.innerHTML = '';
+            list.forEach(a => {
+                container.innerHTML += `
+                    <div class="card">
+                        <div class="card-top">
+                            <span class="tag">${a.cat}</span>
+                            <span class="price">${a.preco} MT</span>
+                        </div>
+                        <div class="name">${a.nome}</div>
+                        <div class="desc">${a.desc}</div>
+                        <div class="loc">📍 ${a.bairro.toUpperCase()}</div>
+                        <button class="btn-order" onclick="openModal('${a.id}')">SOLICITAR CONTACTO</button>
+                    </div>
+                `;
+            });
         }
 
+        // LOGIQUE MODAL
         function openModal(id) {
-            currentArtisan = artisans.find(a => a.id === id);
-            document.getElementById('modalPrice').innerText = currentArtisan.preco;
-            document.getElementById('paymentModal').classList.add('modal-active');
+            selectedArtisan = artisans.find(a => a.id === id);
+            document.getElementById('modalPrice').innerText = selectedArtisan.preco;
+            document.getElementById('paymentModal').style.display = 'flex';
         }
 
         function closeModal() {
-            document.getElementById('paymentModal').classList.remove('modal-active');
+            document.getElementById('paymentModal').style.display = 'none';
         }
 
-        document.getElementById('btnConfirm').onclick = () => {
-            const mpesa = '856113036';
-            const msg = `*SMART AFRICA - CONFIRMAÇÃO*\n\nRef: ${currentArtisan.id}\nServiço: ${currentArtisan.cat}\nNome: ${currentArtisan.nome}\nLocal: ${currentArtisan.bairro}\nValor: ${currentArtisan.preco} MT\n\n_Envio o comprovativo para libertação do contacto._`;
-            window.open(`https://wa.me/258${mpesa}?text=${encodeURIComponent(msg)}`);
+        function confirmPayment() {
+            const mpesa = "856113036";
+            const text = `*PEDIDO SMART AFRICA*\nID: ${selectedArtisan.id}\nServiço: ${selectedArtisan.cat}\nNome: ${selectedArtisan.nome}\nValor: ${selectedArtisan.preco} MT\n\n_Envio o comprovativo para libertar o contacto._`;
+            window.open(`https://wa.me/258${mpesa}?text=${encodeURIComponent(text)}`);
             closeModal();
-        };
+        }
 
-        // Init
+        // INIT
         render(artisans);
     </script>
 </body>
