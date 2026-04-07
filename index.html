@@ -28,6 +28,7 @@ const artisans = [
 
 const mpesa = '+258856113036';
 const emola = '+258873213896';
+const whatsappTest = '+258873213896'; // ton Movitel WhatsApp Business pour test client
 
 function normalize(str){ return str.toLowerCase(); }
 
@@ -50,7 +51,8 @@ document.getElementById('search').addEventListener('input',()=>{
 
 function enviarMsg(nome,bairro,competencia,preco){
   const mensagem = `Olá!\nQuero informações sobre:\n- Nome: ${nome}\n- Bairro: ${bairro}\n- Competência: ${competencia}\n- Preço: ${preco} créditos\n\nFavor transferir o valor para:\n- Mpesa: ${mpesa}\n- Emola: ${emola}\nObrigado!`;
-  const url = `https://wa.me/${mpesa.replace(/\D/g,'')}?text=${encodeURIComponent(mensagem)}`;
+  // ici on ouvre le WhatsApp du client pour le test
+  const url = `https://wa.me/${whatsappTest.replace(/\D/g,'')}?text=${encodeURIComponent(mensagem)}`;
   window.open(url,'_blank');
 }
 </script>
