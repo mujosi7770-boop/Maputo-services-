@@ -3,196 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Africa | Serviços Certificados</title>
+    <title>Smart Africa | Serviços Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0f172a; }
-        .modal-active { display: flex !important; animation: fadeIn 0.3s ease; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; }
+        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(51, 65, 85, 0.5); }
+        .card-anim { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-anim:active { transform: scale(0.97); }
+        .modal-blur { backdrop-filter: blur(8px); animation: fadeIn 0.2s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="text-slate-200 min-h-screen pb-10">
+<body class="text-slate-100 min-h-screen">
 
-    <header class="p-5 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
+    <header class="glass sticky top-0 z-50 p-4">
         <div class="max-w-xl mx-auto flex justify-between items-center">
             <div>
-                <h1 class="text-xl font-extrabold text-yellow-500 tracking-tighter uppercase">Smart Africa</h1>
-                <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest leading-none text-white">Maputo • Matola</p>
+                <h1 class="text-2xl font-extrabold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent leading-none">SMART AFRICA</h1>
+                <p class="text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase mt-1">Conexões de Confiança • MZ</p>
             </div>
-            <div class="flex items-center gap-2 bg-green-500/10 px-3 py-1 rounded-full border border-green-500/20">
-                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                <span class="text-[10px] font-bold text-green-500 uppercase">Verificado</span>
+            <div class="h-10 w-10 bg-yellow-500/10 rounded-2xl flex items-center justify-center border border-yellow-500/20">
+                <i data-lucide="shield-check" class="w-6 h-6 text-yellow-500"></i>
             </div>
         </div>
     </header>
 
-    <main class="max-w-xl mx-auto p-4">
-        <div class="relative my-6">
-            <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500"></i>
+    <main class="max-w-xl mx-auto p-4 space-y-6">
+        
+        <div class="relative group">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i data-lucide="search" class="w-5 h-5 text-slate-500 group-focus-within:text-yellow-500 transition-colors"></i>
+            </div>
             <input type="text" id="search" 
-                class="w-full pl-12 pr-4 py-4 bg-slate-800/50 border border-slate-700 rounded-2xl focus:ring-2 focus:ring-yellow-500 outline-none transition-all placeholder:text-slate-600 text-white"
-                placeholder="Pesquise: AC, Matola, PME, Canalizador...">
+                class="w-full pl-12 pr-4 py-5 bg-slate-900/50 border border-slate-800 rounded-3xl outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500 transition-all text-lg placeholder:text-slate-600 shadow-2xl"
+                placeholder="Ex: Fuga de água, Curto, Matola...">
         </div>
 
-        <div id="results" class="space-y-4"></div>
+        <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+            <button onclick="quickSearch('Frio')" class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-full text-xs font-bold whitespace-nowrap hover:bg-yellow-500 hover:text-black transition-all">❄️ AC/Frio</button>
+            <button onclick="quickSearch('Elétrica')" class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-full text-xs font-bold whitespace-nowrap hover:bg-yellow-500 hover:text-black transition-all">⚡ Elétrica</button>
+            <button onclick="quickSearch('Canalizador')" class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-full text-xs font-bold whitespace-nowrap hover:bg-yellow-500 hover:text-black transition-all">🚰 Canalizador</button>
+            <button onclick="quickSearch('Mecânica')" class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-full text-xs font-bold whitespace-nowrap hover:bg-yellow-500 hover:text-black transition-all">🚗 Mecânica</button>
+        </div>
+
+        <div id="results" class="space-y-4">
+            </div>
     </main>
 
-    <div id="paymentModal" class="fixed inset-0 bg-slate-950/90 z-50 hidden items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-700 w-full max-w-sm rounded-3xl p-6 shadow-2xl">
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-yellow-500/10 rounded-full flex items-center justify-center mx-auto mb-4 text-yellow-500">
-                    <i data-lucide="shield-check" class="w-8 h-8"></i>
-                </div>
-                <h2 class="text-xl font-bold text-white">Confirmar Pedido</h2>
-                <p class="text-slate-400 text-sm mt-1">Taxa de conexão: <span id="modalPrice" class="text-yellow-500 font-bold">--</span> MT</p>
+    <div id="paymentModal" class="fixed inset-0 z-[100] hidden items-end sm:items-center justify-center p-4 modal-blur bg-black/60">
+        <div class="bg-slate-900 w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl border border-slate-800">
+            <div class="w-12 h-1.5 bg-slate-800 rounded-full mx-auto mb-6 sm:hidden"></div>
+            <div class="text-center">
+                <h2 class="text-2xl font-extrabold text-white mb-2">Conectar Agora</h2>
+                <p class="text-slate-400 text-sm mb-8">Pague a taxa de <span id="modalPrice" class="text-yellow-500 font-black text-xl">--</span> MT para libertar o contacto verificado.</p>
             </div>
-            <div class="space-y-3 mb-6 text-sm">
-                <div class="flex items-center justify-between p-3 bg-slate-800 rounded-xl border border-slate-700 text-white">
-                    <span class="text-slate-400 font-bold uppercase">M-Pesa</span>
-                    <span class="font-mono font-bold text-yellow-500">85 611 3036</span>
+            
+            <div class="space-y-4 mb-8">
+                <div class="flex items-center justify-between p-4 bg-slate-950 rounded-2xl border border-slate-800 group active:border-yellow-500 transition-all">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-red-600/20 rounded-xl flex items-center justify-center text-red-500 font-black italic">M</div>
+                        <div><p class="text-[10px] text-slate-500 font-bold uppercase">M-Pesa</p><p class="text-white font-mono font-bold">85 611 3036</p></div>
+                    </div>
                 </div>
-                <div class="flex items-center justify-between p-3 bg-slate-800 rounded-xl border border-slate-700 text-white">
-                    <span class="text-slate-400 font-bold uppercase">e-Mola</span>
-                    <span class="font-mono font-bold text-orange-500">87 321 3896</span>
+                <div class="flex items-center justify-between p-4 bg-slate-950 rounded-2xl border border-slate-800 group active:border-orange-500 transition-all">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-orange-600/20 rounded-xl flex items-center justify-center text-orange-500 font-black italic">E</div>
+                        <div><p class="text-[10px] text-slate-500 font-bold uppercase">e-Mola</p><p class="text-white font-mono font-bold">87 321 3896</p></div>
+                    </div>
                 </div>
             </div>
-            <div class="flex flex-col gap-3">
-                <button id="btnConfirm" class="w-full bg-green-600 hover:bg-green-500 text-white font-extrabold py-4 rounded-2xl transition shadow-lg">ENVIAR COMPROVATIVO</button>
-                <button onclick="closeModal()" class="text-slate-500 text-sm font-bold hover:text-white transition">Cancelar</button>
-            </div>
+
+            <button id="btnConfirm" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-black py-5 rounded-2xl transition shadow-xl uppercase text-sm tracking-widest active:scale-95">Enviar Comprovativo</button>
+            <button onclick="closeModal()" class="w-full mt-4 text-slate-500 text-xs font-bold hover:text-white transition">Voltar</button>
         </div>
     </div>
 
     <script>
         const artisans = [
-            // --- ❄️ FRIO ---
-            {id:'F01', cat:'Frio', nome:'Refri-Maputo Lda', bairro:'Alto Maé', preco:75, desc:'PME especializada em AC e refrigeração comercial'},
-            {id:'F02', cat:'Frio', nome:'Mestre Momed AC', bairro:'Matola T3', preco:30, desc:'Artisan local - Especialista em reparação rápida'},
-            {id:'F03', cat:'Frio', nome:'Clima-Moz', bairro:'Polana / Sommerschield', preco:100, desc:'PME reconhecida - Instalação industrial e AVAC'},
-            {id:'F04', cat:'Frio', nome:'Gelo-Tech', bairro:'Benfica / Zimpeto', preco:50, desc:'PME - Assistência técnica em geleiras e arcas'},
-            {id:'F05', cat:'Frio', nome:'Assistência Total AC', bairro:'Bairro Central', preco:35, desc:'Artisan - Manutenção de split AC doméstico'},
-            {id:'F06', cat:'Frio', nome:'Frimec SA', bairro:'Matola Rio', preco:250, desc:'Grande empresa - Projectos AVAC industriais'},
-            {id:'F07', cat:'Frio', nome:'DR FRIO', bairro:'Maputo', preco:50, desc:'PME - Especialista em recarga de gás e fugas'},
-            {id:'F08', cat:'Frio', nome:'Eagle-X Lda', bairro:'Maputo', preco:50, desc:'PME - Assistência técnica multimarca'},
-            {id:'F09', cat:'Frio', nome:'Tecno-Air', bairro:'Maputo', preco:50, desc:'PME - Montagem e limpeza de climatizadores'},
-            {id:'F10', cat:'Frio', nome:'MECA FRIO Lda', bairro:'Maputo', preco:75, desc:'PME - Refrigeração comercial e balcões'},
-            {id:'F11', cat:'Frio', nome:'Emforma', bairro:'Maputo', preco:50, desc:'PME - Manutenção preventiva de ar condicionado'},
-            {id:'F12', cat:'Frio', nome:'FrioElite RSS', bairro:'Maputo', preco:60, desc:'PME - Serviços de frio e climatização'},
-            {id:'F13', cat:'Frio', nome:'APN Services AVAC', bairro:'Maputo', preco:75, desc:'PME - Instalações técnicas certificadas'},
-            {id:'F14', cat:'Frio', nome:'João Carlos Manjate', bairro:'Maputo', preco:25, desc:'Artisan local - Reparação de geleiras de casa'},
-            {id:'F15', cat:'Frio', nome:'Kaya Climatização', bairro:'Maputo', preco:50, desc:'PME - Venda e montagem de AC'},
-            {id:'F16', cat:'Frio', nome:'Mestre Alberto Frio', bairro:'Matola Gare', preco:30, desc:'Artisan local - Assistência técnica móvel'},
-            {id:'F17', cat:'Frio', nome:'ClimaServiços Moz', bairro:'Av. 24 de Julho', preco:80, desc:'PME - Manutenção de sistemas centrais'},
-            {id:'F18', cat:'Frio', nome:'Mestre Ernesto AC', bairro:'Bairro Central', preco:30, desc:'Artisan local - Reparação de AC e ventiladores'},
-            {id:'F19', cat:'Frio', nome:'PolarTech Lda', bairro:'Av. Eduardo Mondlane', preco:150, desc:'Grande empresa - Climatização central certificada'},
-            {id:'F20', cat:'Frio', nome:'Mestre Luís Frio', bairro:'Matola Rio', preco:30, desc:'Artisan local - Especialista em frio doméstico'},
-            {id:'F21', cat:'Frio', nome:'CoolMoz Services', bairro:'Av. Julius Nyerere', preco:80, desc:'PME - Assistência Premium residencial'},
-            {id:'F22', cat:'Frio', nome:'Mestre Domingos AC', bairro:'Malhangalene', preco:30, desc:'Artisan local - Limpeza e recarga de AC'},
-            {id:'F23', cat:'Frio', nome:'ClimaPro Moçambique', bairro:'Av. Vladimir Lenine', preco:75, desc:'PME - Serviços técnicos especializados'},
-            {id:'F24', cat:'Frio', nome:'Mestre Celso Frio', bairro:'Laulane', preco:30, desc:'Artisan local - Reparação de compressores'},
-            {id:'F25', cat:'Frio', nome:'Arctic Services Lda', bairro:'Av. Guerra Popular', preco:200, desc:'Grande empresa - AVAC e refrigeração industrial'},
-
             // --- ⚡ ELÉCTRICA ---
-            {id:'E01', cat:'Elétrica', nome:'Sengelec Moçambique', bairro:'Maputo Cidade B.O', preco:200, desc:'Grande empresa - Média tensão e quadros complexos'},
-            {id:'E02', cat:'Elétrica', nome:'Electricidade Matola', bairro:'Av. Samora Machel', preco:150, desc:'Grande empresa - Assistência elétrica certificada'},
-            {id:'E03', cat:'Elétrica', nome:'Estação da EDM', bairro:'Matola', preco:250, desc:'Grande empresa - Serviços técnicos EDM'},
-            {id:'E04', cat:'Elétrica', nome:'Electro-Serv MZ', bairro:'Machava / Matola', preco:50, desc:'PME - Manutenção elétrica residencial e industrial'},
-            {id:'E05', cat:'Elétrica', nome:'Volt-Maputo', bairro:'Costa do Sol / Triunfo', preco:80, desc:'PME - Instalações elétricas modernas e LED'},
-            {id:'E06', cat:'Elétrica', nome:'ElectroShadd', bairro:'Malhampsene, Matola', preco:50, desc:'PME - Especialista em comandos e proteção elétrica'},
-            {id:'E07', cat:'Elétrica', nome:'Electro-Moz-Solar', bairro:'Matola', preco:100, desc:'PME - Instalação de sistemas solares e inversores'},
-            {id:'E08', cat:'Elétrica', nome:'DCMZ Electrics Lda', bairro:'Bairro Tsalala', preco:50, desc:'PME - Redes elétricas e canalização elétrica'},
-            {id:'E09', cat:'Elétrica', nome:'LuzTech', bairro:'Maputo', preco:50, desc:'PME - Iluminação e manutenção residencial'},
-            {id:'E10', cat:'Elétrica', nome:'PowerMoz', bairro:'Maputo', preco:50, desc:'PME - Soluções de energia e geradores'},
-            {id:'E11', cat:'Elétrica', nome:'Electricista João', bairro:'Laulane / Hulene', preco:20, desc:'Artisan local - Reparação de curtos e tomadas'},
-            {id:'E12', cat:'Elétrica', nome:'Dreque Puto Servic', bairro:'Infulene, Matola', preco:25, desc:'Artisan local - Montagens domésticas rápidas'},
-            {id:'E13', cat:'Elétrica', nome:'Instal-Luz', bairro:'Magoanine', preco:25, desc:'Artisan local - Fiação e quadros residenciais'},
-            {id:'E14', cat:'Elétrica', nome:'Mestre António', bairro:'Bairro Central', preco:30, desc:'Artisan local - Electricista residencial 24h'},
-            {id:'E15', cat:'Elétrica', nome:'Mestre Carlos Luz', bairro:'Matola Cidade', preco:30, desc:'Artisan local - Instalação de disjuntores e luzes'},
-
-            // --- 🚰 CANALIZADOR ---
-            {id:'C01', cat:'Canalizador', nome:'Isarte Construções', bairro:'Maputo / Matola', preco:75, desc:'PME - Canalização geral, esgotos e infiltrações'},
-            {id:'C02', cat:'Canalizador', nome:'SOS Canalização', bairro:'Sommerschield II', preco:100, desc:'PME - Assistência de emergência 24h'},
-            {id:'C03', cat:'Canalizador', nome:'Furos de Água MZ', bairro:'Zimpeto / Marracuene', preco:150, desc:'PME - Especialista em furos e bombas submersíveis'},
-            {id:'C04', cat:'Canalizador', nome:'Aderegás Moçambique', bairro:'Rua Damião de Góis', preco:120, desc:'PME - Redes de gás e água quente'},
-            {id:'C05', cat:'Canalizador', nome:'Housefix Mozambique', bairro:'Rua da Alegria', preco:75, desc:'PME - Reparações hidráulicas domésticas'},
-            {id:'C06', cat:'Canalizador', nome:'Solutions 4 You', bairro:'Av. 04 de Outubro', preco:75, desc:'PME - Soluções de água e saneamento'},
-            {id:'C07', cat:'Canalizador', nome:'Beto Canalizações', bairro:'Matola Rio', preco:40, desc:'Artisan - Picheleiro residencial especializado'},
-            {id:'C08', cat:'Canalizador', nome:'Macheque Tile & Plumbing', bairro:'Maputo', preco:80, desc:'PME - Assentamento de mosaicos e canalização'},
-            {id:'C11', cat:'Canalizador', nome:'Mestre Ricardo Picheleiro', bairro:'Bairro Central', preco:30, desc:'Artisan local - Desentupimentos e torneiras'},
-
-            // --- 🧹 LIMPEZA ---
-            {id:'L01', cat:'Limpeza', nome:'Clean Force Lda', bairro:'Polana', preco:60, desc:'PME - Limpeza profunda pós-obra e vidros'},
-            {id:'L02', cat:'Limpeza', nome:'Brilho de Moçambique', bairro:'Sommerschield', preco:80, desc:'PME - Gestão de limpeza residencial e comercial'},
-            {id:'L03', cat:'Limpeza', nome:'Express Cleaning', bairro:'Maputo City', preco:50, desc:'PME - Limpeza rápida e eficiente'},
-            {id:'L04', cat:'Limpeza', nome:'Nemchem Moçambique', bairro:'Matola / Joaquim Chissano', preco:250, desc:'Grande empresa - Higienização industrial certificada'},
-            {id:'L05', cat:'Limpeza', nome:'Amati Limpeza', bairro:'Bairro Fomento, Matola', preco:60, desc:'PME - Limpeza de tapetes e manutenção'},
-            {id:'L07', cat:'Limpeza', nome:'Clean Africa', bairro:'Av. Agostinho Neto', preco:75, desc:'PME - Serviços de limpeza hospitalar e escritórios'},
-            {id:'L11', cat:'Limpeza', nome:'Lava-Sofás Maputo', bairro:'Bairro Central', preco:40, desc:'Artisan local - Limpeza a seco de estofos e carpetes'},
-            {id:'L12', cat:'Limpeza', nome:'Dona Brilhante', bairro:'Matola Cidade', preco:30, desc:'Artisan local - Limpeza diária e organização'},
-
-            // --- 📺 ELECTRÓNICA ---
-            {id:'T01', cat:'Electrónica', nome:'PC Doctor MZ', bairro:'Maputo', preco:60, desc:'PME - Reparação de computadores, software e hardware'},
-            {id:'T02', cat:'Electrónica', nome:'Smart-Fix Maputo', bairro:'Polana', preco:80, desc:'PME - Reparação de smartphones e tablets'},
-            {id:'T03', cat:'Electrónica', nome:'Centro Electrónico Matola', bairro:'Matola Cidade', preco:50, desc:'PME - Assistência técnica multimarca'},
-            {id:'T04', cat:'Electrónica', nome:'Netmoz LDA', bairro:'Matola', preco:75, desc:'PME - Redes informáticas e TI'},
-            {id:'T08', cat:'Electrónica', nome:'The GoodGuy', bairro:'Av. 24 de Julho', preco:100, desc:'PME - Especialista Apple e dispositivos High-End'},
-            {id:'T12', cat:'Electrónica', nome:'Reparação TV Led', bairro:'Bairro Central', preco:35, desc:'Artisan local - Especialista em ecrãs e fontes de TV'},
-
-            // --- 🔑 SERRALHEIRO ---
-            {id:'S01', cat:'Serralheiro', nome:'Chaveiro Maputo 24h', bairro:'Maputo', preco:150, desc:'Grande empresa - Abertura de cofres e chaves eletrónicas'},
-            {id:'S02', cat:'Serralheiro', nome:'Serralharia Segura', bairro:'Matola', preco:75, desc:'PME - Grades, portões e segurança física'},
-            {id:'S06', cat:'Serralheiro', nome:'Locksmith Maputo', bairro:'Av. Maguiguana', preco:80, desc:'PME - Mestres de chaves e fechaduras de alta segurança'},
-            {id:'S07', cat:'Serralheiro', nome:'Lourenço Serralharia', bairro:'Mozal, Matola', preco:50, desc:'PME - Soldadura industrial e portões elétricos'},
-            {id:'S13', cat:'Serralheiro', nome:'Chaveiro Langa', bairro:'Rotunda de Khobe', preco:25, desc:'Artisan local - Cópia de chaves e reparação de fechaduras'},
+            {id:'E01', cat:'Elétrica', nome:'Sengelec Moçambique', bairro:'Maputo B.O', preco:200, desc:'Industrial, Quadros, Alta Tensão'},
+            {id:'E04', cat:'Elétrica', nome:'Electro-Serv MZ', bairro:'Machava', preco:50, desc:'Doméstico e Comercial'},
+            {id:'E06', cat:'Elétrica', nome:'ElectroShadd', bairro:'Malhampsene', preco:50, desc:'Comandos e Automação'},
+            {id:'E07', cat:'Elétrica', nome:'Electro-Moz-Solar', bairro:'Matola', preco:100, desc:'Energia Solar, Inversores'},
+            {id:'E11', cat:'Elétrica', nome:'Electricista João', bairro:'Laulane', preco:25, desc:'Reparações de emergência'},
+            {id:'E15', cat:'Elétrica', nome:'Mestre António', bairro:'Bairro Central', preco:30, desc:'Piquete 24h residencial'},
 
             // --- 🚗 MECÂNICA ---
-            {id:'M01', cat:'Mecânica', nome:'Auto-Socorro 24h', bairro:'Av. Eduardo Mondlane', preco:200, desc:'Grande empresa - Reboque e assistência mecânica pesada'},
-            {id:'M04', cat:'Mecânica', nome:'MIDAS Matola', bairro:'Matola Cidade', preco:150, desc:'Grande empresa - Manutenção oficial e diagnósticos'},
-            {id:'M11', cat:'Mecânica', nome:'Oficina Mussa', bairro:'Bairro Central', preco:60, desc:'PME - Mecânica geral e motores'},
-            {id:'M14', cat:'Mecânica', nome:'Garagem Móvel Matola', bairro:'Matola Gare', preco:40, desc:'Artisan local - Mecânico ao domicílio para socorro rápido'}
+            {id:'M01', cat:'Mecânica', nome:'Auto-Socorro 24h', bairro:'Av. Eduardo Mondlane', preco:200, desc:'Reboque e Mecânica Pesada'},
+            {id:'M04', cat:'Mecânica', nome:'MIDAS Matola', bairro:'Matola Cidade', preco:150, desc:'Revisão e Diagnóstico Oficial'},
+            {id:'M11', cat:'Mecânica', nome:'Oficina Mussa', bairro:'Bairro Central', preco:60, desc:'Reparação de Motores'},
+            {id:'M14', cat:'Mecânica', nome:'Garagem Móvel', bairro:'Matola Gare', preco:40, desc:'Mecânico ao Domicílio'},
+
+            // --- ❄️ FRIO ---
+            {id:'F01', cat:'Frio', nome:'Refri-Maputo Lda', bairro:'Alto Maé', preco:75, desc:'AC, Arcas e Geleiras'},
+            {id:'F03', cat:'Frio', nome:'Clima-Moz', bairro:'Polana', preco:100, desc:'Instalações e AVAC'},
+            {id:'F06', cat:'Frio', nome:'Frimec SA', bairro:'Matola Rio', preco:250, desc:'Projectos Frio Industrial'},
+            {id:'F19', cat:'Frio', nome:'PolarTech Lda', bairro:'Av. Eduardo Mondlane', preco:150, desc:'Manutenção Certificada'},
+
+            // --- 🚰 CANALIZADOR ---
+            {id:'C01', cat:'Canalizador', nome:'Isarte Construções', bairro:'Maputo', preco:75, desc:'Água, Esgoto e Infiltrações'},
+            {id:'C03', cat:'Canalizador', nome:'Furos de Água MZ', bairro:'Zimpeto', preco:200, desc:'Furos, Bombas e Tanques'},
+            {id:'C11', cat:'Canalizador', nome:'Mestre Ricardo', bairro:'Bairro Central', preco:30, desc:'Picheleiro 24h'},
+
+            // --- 🧹 LIMPEZA ---
+            {id:'L04', cat:'Limpeza', nome:'Nemchem MZ', bairro:'Matola', preco:250, desc:'Higienização Hospitalar/Industrial'},
+            {id:'L11', cat:'Limpeza', nome:'Lava-Sofás Maputo', bairro:'Maputo', preco:40, desc:'Sofás, Carpetes e Colchões'}
         ];
+
+        // MOTEUR DE RECHERCHE SURPUISSANT (Tags Cachés)
+        const tagsMap = {
+            'Frio': 'ac ar condicionado geladeira arca split gás ventoinha congelador climatização frio',
+            'Elétrica': 'luz curto circuito painel solar inversor edm disjuntor fiação tomada lâmpada fuso corrente',
+            'Canalizador': 'água picheleiro esgoto fuga cano torneira sanita infiltração furo bomba tanque pia pichela',
+            'Mecânica': 'carro motor óleo travão pneu reboque oficina bateria injector suspensão chapa pintura',
+            'Limpeza': 'casa escritório sofá tapete desinfecção nemchem brilho pós-obra doméstica higiene',
+            'Electrónica': 'tv computador pc laptop ecra display telemovel iphone samsung software'
+        };
 
         const container = document.getElementById('results');
         let currentArtisan = null;
 
         function render(list) {
             container.innerHTML = '';
-            if(list.length === 0) {
-                container.innerHTML = `<p class="text-center text-slate-500 py-10 italic">Nenhum resultado para esta pesquisa...</p>`;
-                return;
-            }
-            list.forEach(a => {
-                container.innerHTML += `
-                    <div class="bg-slate-800/40 border border-slate-700/50 p-5 rounded-2xl hover:border-yellow-500/40 transition-all group">
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <span class="text-[10px] font-black uppercase text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded-md mb-2 inline-block">${a.cat}</span>
-                                <h3 class="text-lg font-bold group-hover:text-yellow-400 transition-colors text-white">${a.nome}</h3>
-                                <p class="text-slate-400 text-xs mt-1 mb-2">${a.desc}</p>
-                                <p class="text-slate-500 text-[10px] flex items-center gap-1 font-black uppercase"><i data-lucide="map-pin" class="w-3 h-3 text-red-500"></i> ${a.bairro}</p>
+            list.forEach((a, index) => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-900/40 border border-slate-800 p-6 rounded-[2rem] card-anim hover:border-yellow-500/50 group relative overflow-hidden';
+                card.innerHTML = `
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-100 transition-opacity">
+                         <i data-lucide="external-link" class="w-4 h-4 text-yellow-500"></i>
+                    </div>
+                    <div class="flex justify-between items-start mb-5">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 bg-yellow-500/10 text-yellow-500 text-[9px] font-black uppercase rounded-md tracking-wider">${a.cat}</span>
+                                <span class="flex items-center gap-1 text-[9px] font-bold text-green-500 uppercase tracking-tighter"><i data-lucide="check-circle-2" class="w-3 h-3"></i> Verificado</span>
                             </div>
-                            <div class="text-right">
-                                <p class="text-xl font-black text-white">${a.preco}<span class="text-[10px] ml-0.5 text-slate-500 italic uppercase">MT</span></p>
-                            </div>
+                            <h3 class="text-xl font-extrabold text-white">${a.nome}</h3>
+                            <p class="text-slate-400 text-xs font-medium">${a.desc}</p>
                         </div>
-                        <button onclick="openModal('${a.id}')" class="w-full py-3 bg-slate-700 hover:bg-yellow-500 hover:text-black rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2">
-                            SOLICITAR CONTACTO <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </button>
+                        <div class="text-right">
+                            <span class="block text-2xl font-black text-white">${a.preco}<span class="text-xs text-slate-500 ml-1">MT</span></span>
+                            <span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Taxa Fixa</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between mt-6 pt-4 border-t border-slate-800/50">
+                        <div class="flex items-center gap-1 text-slate-500 text-[10px] font-black uppercase">
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-red-500"></i> ${a.bairro}
+                        </div>
+                        <button onclick="openModal('${a.id}')" class="px-6 py-3 bg-yellow-500 text-black font-black rounded-xl text-xs uppercase tracking-tighter active:scale-90 transition-all">Solicitar</button>
                     </div>
                 `;
+                container.appendChild(card);
             });
             lucide.createIcons();
         }
 
         document.getElementById('search').oninput = (e) => {
-            const query = e.target.value.toLowerCase().trim();
+            const val = e.target.value.toLowerCase().trim();
             const filtered = artisans.filter(a => {
-                return (a.cat.toLowerCase().includes(query) || a.nome.toLowerCase().includes(query) || a.bairro.toLowerCase().includes(query) || a.desc.toLowerCase().includes(query));
+                const searchContent = `${a.nome} ${a.bairro} ${a.cat} ${a.desc} ${tagsMap[a.cat] || ''}`.toLowerCase();
+                return val.split(' ').every(term => searchContent.includes(term));
             });
             render(filtered);
         };
+
+        function quickSearch(cat) {
+            document.getElementById('search').value = cat;
+            document.getElementById('search').dispatchEvent(new Event('input'));
+        }
 
         function openModal(id) {
             currentArtisan = artisans.find(a => a.id === id);
@@ -206,13 +187,13 @@
 
         document.getElementById('btnConfirm').onclick = () => {
             const mpesa = '856113036';
-            const msg = `*PEDIDO SMART AFRICA*\n--------------------------\nID: ${currentArtisan.id}\nServiço: ${currentArtisan.cat}\nNome: ${currentArtisan.nome}\nBairro: ${currentArtisan.bairro}\nValor: ${currentArtisan.preco} MT\n--------------------------\nQuero pagar agora para receber o contacto.`;
+            const msg = `*SMART AFRICA - CONFIRMAÇÃO*\n\nRef: ${currentArtisan.id}\nServiço: ${currentArtisan.cat}\nNome: ${currentArtisan.nome}\nLocal: ${currentArtisan.bairro}\nValor: ${currentArtisan.preco} MT\n\n_Envio o comprovativo para libertação do contacto._`;
             window.open(`https://wa.me/258${mpesa}?text=${encodeURIComponent(msg)}`);
             closeModal();
         };
 
+        // Init
         render(artisans);
     </script>
 </body>
-                </html>
-                    
+</html>
