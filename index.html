@@ -1,75 +1,77 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mini Smart Africa Prototype</title>
-<style>
-body { font-family: Arial, sans-serif; background:#111; color:#fff; margin:0; padding:20px; }
-input, button { padding:10px; margin:5px 0; border-radius:8px; border:none; font-weight:bold; }
-input { width:100%; }
-button { cursor:pointer; }
-.card { background:#222; padding:15px; border-radius:12px; margin-bottom:10px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Africa | Mozambique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-900 text-white min-h-screen p-5">
 
-<h1>Mini Smart Africa</h1>
+    <div class="max-w-md mx-auto">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-yellow-500">Mini Smart Africa</h1>
+            <p class="text-gray-400 text-sm">Trouvez des artisans locaux en un clic</p>
+        </header>
 
-<!-- Champ pour le client -->
-<input type="text" id="clientNumber" placeholder="Votre WhatsApp ici (ex: +2588...)">
+        <div class="relative mb-6">
+            <input type="text" id="search" 
+                class="w-full p-4 bg-gray-800 rounded-xl border border-gray-700 focus:border-yellow-500 outline-none transition"
+                placeholder="Ex: Frio, Matola, Plombier...">
+        </div>
 
-<!-- Barre de recherche -->
-<input type="text" id="search" placeholder="Procure: categoria, bairro, competência...">
+        <div id="results" class="space-y-4">
+            </div>
+    </div>
 
-<div id="results"></div>
+    <script>
+        // Tes données (À connecter plus tard à Supabase gratuitement)
+        const artisans = [
+            {cat:'frio', nome:'Refri-Maputo Lda', bairro:'Alto Maé', preco:2, competencia:'PME Spécialisée'},
+            {cat:'eletrica', nome:'Sengelec MZ', bairro:'Maputo Cidade', preco:5, competencia:'Expert'},
+            {cat:'limpeza', nome:'Clean Force', bairro:'Polana', preco:2, competencia:'PME'}
+        ];
 
-<script>
-// Données de test
-const artisans = [
-  {cat:'frio', nome:'Refri-Maputo Lda', bairro:'Alto Maé', preco:2, competencia:'PME especializada'},
-  {cat:'frio', nome:'Mestre Momed', bairro:'Matola T3', preco:2, competencia:'Artisan local'},
-  {cat:'eletrica', nome:'Sengelec MZ', bairro:'Maputo Cidade', preco:50, competencia:'Grande entreprise'},
-  {cat:'limpeza', nome:'Clean Force', bairro:'Polana', preco:2, competencia:'PME'}
-];
+        const searchInput = document.getElementById('search');
+        const resultsContainer = document.getElementById('results');
 
-// Numéros fixes de paiement
-const mpesa = '+258856113036';
-const emola = '+258873213896';
+        function display(list) {
+            resultsContainer.innerHTML = list.length ? '' : '<p class="text-center text-gray-500">Aucun artisan trouvé 😅</p>';
+            list.forEach(a => {
+                resultsContainer.innerHTML += `
+                    <div class="bg-gray-800 p-5 rounded-2xl border-l-4 border-yellow-500 shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-lg">${a.nome}</h3>
+                                <p class="text-sm text-gray-400 font-mono">${a.bairro} • ${a.cat.toUpperCase()}</p>
+                            </div>
+                            <span class="bg-yellow-500/10 text-yellow-500 px-2 py-1 rounded text-xs font-bold">${a.preco} CR</span>
+                        </div>
+                        <p class="mt-2 text-sm italic text-gray-300">"${a.competencia}"</p>
+                        <button onclick="enviarMsg('${a.nome}')" class="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-lg transition">
+                            Contacter via WhatsApp
+                        </button>
+                    </div>
+                `;
+            });
+        }
 
-// Normalisation pour recherche
-function normalize(str){ return str.toLowerCase(); }
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = artisans.filter(a => 
+                a.nome.toLowerCase().includes(term) || a.cat.toLowerCase().includes(term) || a.bairro.toLowerCase().includes(term)
+            );
+            display(filtered);
+        });
 
-// Recherche dynamique
-document.getElementById('search').addEventListener('input', ()=>{
-  const term = normalize(document.getElementById('search').value);
-  const results = artisans.filter(a=>{
-    return normalize(a.cat).includes(term) || normalize(a.bairro).includes(term) || normalize(a.competencia).includes(term) || normalize(a.nome).includes(term);
-  });
-  const container = document.getElementById('results');
-  container.innerHTML = '';
-  if(results.length===0){ container.innerHTML='<p>Nenhum resultado encontrado 😅</p>'; return; }
+        // Affichage initial
+        display(artisans);
 
-  results.forEach(a=>{
-    const div = document.createElement('div');
-    div.className='card';
-    div.innerHTML = `<b>${a.nome}</b> (${a.cat.toUpperCase()})<br>${a.bairro}<br>Competência: ${a.competencia}<br>Preço: ${a.preco} CR <button onclick="enviarMsg('${a.nome}', '${a.bairro}', '${a.competencia}', ${a.preco})">Enviar Pedido WhatsApp</button>`;
-    container.appendChild(div);
-  });
-});
-
-// Fonction pour envoyer WhatsApp au client
-function enviarMsg(nome,bairro,competencia,preco){
-  const clientNumber = document.getElementById('clientNumber').value;
-  if(!clientNumber){ alert("Insira seu número WhatsApp antes de enviar!"); return; }
-
-  const mensagem = `Olá!\nQuero informações sobre:\n- Nome: ${nome}\n- Bairro: ${bairro}\n- Competência: ${competencia}\n- Preço: ${preco} créditos\n\nFavor transferir o valor para:\n- Mpesa: ${mpesa}\n- Emola: ${emola}\nObrigado!`;
-  
-  // Ouvre WhatsApp du client
-  const url = `https://wa.me/${clientNumber.replace(/\D/g,'')}?text=${encodeURIComponent(mensagem)}`;
-  window.open(url,'_blank');
-}
-</script>
-
+        function enviarMsg(nome) {
+            const mpesa = "+258856113036";
+            const msg = `Bonjour, je souhaite contacter l'artisan : ${nome}.`;
+            window.open(`https://wa.me/${mpesa.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
+        }
+    </script>
 </body>
 </html>
